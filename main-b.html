@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메인B — 정착·성장 여정형 | 해외연구인력 통합지원 플랫폼</title>
+<link rel="stylesheet" href="css/common.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── 메인B 전용 스타일 ── */
+
+/* 헤더 투명/스크롤 */
+.header-b {
+  background: transparent;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+}
+.header-b .site-logo { color: #fff; }
+.header-b .logo-badge { background: rgba(255,255,255,0.2); }
+.header-b .site-nav a { color: rgba(255,255,255,0.8); }
+.header-b .site-nav a:hover { background: rgba(255,255,255,0.12); color: #fff; }
+.header-b .lang-switch { border-color: rgba(255,255,255,0.25); }
+.header-b .lang-switch span { color: rgba(255,255,255,0.6); }
+.header-b .lang-switch span.on { background: rgba(255,255,255,0.25); color: #fff; }
+.header-b .btn-login { border-color: rgba(255,255,255,0.4); color: #fff; }
+.header-b .btn-login:hover { background: rgba(255,255,255,0.15); }
+.header-b .btn-signup { background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3); }
+.header-b .btn-signup:hover { background: rgba(255,255,255,0.28); }
+.header-b .icon-bell { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); }
+
+/* ── 히어로 B — 풀스크린 그라디언트 ── */
+.hero-b {
+  min-height: 100vh;
+  background: linear-gradient(150deg, #05245A 0%, #0A3A80 40%, #0D5FAA 70%, #0D7A55 100%);
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero-b-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(0,168,120,0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(45,110,212,0.2) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(15,50,114,0.3) 0%, transparent 60%);
+}
+/* 부유하는 원형 장식 */
+.hero-b .orb1 {
+  position: absolute;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  top: -80px; right: 100px;
+}
+.hero-b .orb2 {
+  position: absolute;
+  width: 250px; height: 250px;
+  border-radius: 50%;
+  background: rgba(0,168,120,0.08);
+  border: 1px solid rgba(0,168,120,0.12);
+  bottom: 80px; left: 60px;
+}
+.hero-b .orb3 {
+  position: absolute;
+  width: 150px; height: 150px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  bottom: 200px; right: 200px;
+}
+.hero-b-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 80px;
+  align-items: center;
+}
+.hero-b-left {}
+.hero-b-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.hero-b-eyebrow .pill {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.8);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.hero-b-eyebrow .pill.green {
+  background: rgba(0,168,120,0.2);
+  border-color: rgba(0,168,120,0.35);
+  color: #6EFFD8;
+}
+.hero-b-title {
+  font-size: 48px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 18px;
+}
+.hero-b-title .highlight {
+  background: linear-gradient(135deg, #93C5FD, #6EFFD8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-b-sub {
+  font-size: 17px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.7;
+  margin-bottom: 36px;
+  max-width: 480px;
+}
+.hero-b-search {
+  display: flex;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.hero-b-search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 14px 18px;
+  font-size: 15px;
+  color: #fff;
+}
+.hero-b-search input::placeholder { color: rgba(255,255,255,0.4); }
+.hero-b-search button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0 22px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.hero-b-search button:hover { background: #D4891A; }
+.hero-b-tags {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+.hero-b-tags .label { font-size: 13px; color: rgba(255,255,255,0.5); }
+.hero-b-tag {
+  padding: 4px 12px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 20px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.75);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.hero-b-tag:hover { background: rgba(255,255,255,0.18); color: #fff; }
+.hero-b-cta {
+  display: flex;
+  gap: 12px;
+}
+.hero-b-cta-main {
+  background: linear-gradient(135deg, var(--secondary), #007B5C);
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.18s;
+  box-shadow: 0 4px 16px rgba(0,168,120,0.35);
+}
+.hero-b-cta-main:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,168,120,0.4); }
+.hero-b-cta-sub {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+  padding: 14px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+.hero-b-cta-sub:hover { background: rgba(255,255,255,0.18); }
+
+/* 우측 진단 카드 */
+.hero-b-right {}
+.diagnosis-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(16px);
+  padding: 28px;
+}
+.diagnosis-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.diagnosis-card p {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 20px;
+}
+.diag-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.diag-opt {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: all 0.18s;
+}
+.diag-opt:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.25);
+  transform: translateX(4px);
+}
+.diag-opt .emoji { font-size: 22px; }
+.diag-opt .info .title { font-size: 14px; font-weight: 600; color: #fff; }
+.diag-opt .info .desc { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+.diag-opt .arrow { margin-left: auto; color: rgba(255,255,255,0.4); font-size: 16px; }
+
+/* ── 여정 맵 섹션 ── */
+.journey-section {
+  background: var(--bg-white);
+  padding: 64px 0;
+  border-bottom: 1px solid var(--border);
+}
+.journey-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.journey-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.journey-header h2 {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--text-main);
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+.journey-header p { font-size: 16px; color: var(--text-mute); }
+.journey-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+.journey-steps::before {
+  content: '';
+  position: absolute;
+  top: 40px;
+  left: 12.5%;
+  right: 12.5%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  z-index: 0;
+}
+.journey-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px;
+  position: relative;
+  z-index: 1;
+}
+.journey-num {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.j1 .journey-num { background: linear-gradient(135deg, #1A4FA0, #2D6ED4); }
+.j2 .journey-num { background: linear-gradient(135deg, #0D7A55, #00A878); }
+.j3 .journey-num { background: linear-gradient(135deg, #7C3AED, #A78BFA); }
+.j4 .journey-num { background: linear-gradient(135deg, #D97706, #F59E0B); }
+
+.journey-step-label {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  text-align: center;
+}
+.journey-step-sub {
+  font-size: 12px;
+  color: var(--text-mute);
+  text-align: center;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.journey-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+.journey-mini {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-sub);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.journey-mini:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+.journey-mini .icon { font-size: 14px; }
+.journey-cta {
+  text-align: center;
+  margin-top: 36px;
+}
+
+/* ── 개인화 추천 보드 ── */
+.recommend-section {
+  background: var(--bg);
+  padding: 56px 0;
+  border-bottom: 1px solid var(--border);
+}
+.recommend-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.recommend-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.recommend-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.3px;
+}
+.recommend-title em {
+  color: var(--primary);
+  font-style: normal;
+}
+.rec-tabs {
+  display: flex;
+  gap: 6px;
+}
+.rec-tab {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--text-mute);
+  transition: all 0.15s;
+}
+.rec-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.recommend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.rec-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.rec-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.rec-card-color {
+  height: 6px;
+}
+.rec-card-body { padding: 18px; }
+.rec-card-cat { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.rec-card-title { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; line-height: 1.4; }
+.rec-card-desc { font-size: 13px; color: var(--text-mute); line-height: 1.5; margin-bottom: 14px; }
+.rec-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-mute);
+}
+
+/* ── 실시간 정보 ── */
+.realtime-section {
+  background: #fff;
+  padding: 56px 0;
+  border-bottom: 1px solid var(--border);
+}
+.realtime-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.realtime-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.rt-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.rt-box-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.rt-box-header h4 { font-size: 14px; font-weight: 700; }
+.rt-item {
+  padding: 12px 18px;
+  border-bottom: 1px solid #F0F4F8;
+  cursor: pointer;
+  transition: background 0.15s;
+  background: #fff;
+}
+.rt-item:last-child { border-bottom: none; }
+.rt-item:hover { background: #EBF4FF; }
+.rt-item .rt-label { font-size: 13px; font-weight: 600; color: var(--text-main); line-height: 1.4; }
+.rt-item .rt-meta { font-size: 11px; color: var(--text-mute); margin-top: 4px; display: flex; gap: 8px; }
+.rt-item .rt-urgency { font-size: 11px; color: var(--danger); font-weight: 700; }
+
+/* ── 신뢰/전문가 섹션 ── */
+.trust-section {
+  background: var(--bg);
+  padding: 56px 0;
+  border-bottom: 1px solid var(--border);
+}
+.trust-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.mentor-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.mentor-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.mentor-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--primary); }
+.mentor-avatar {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid var(--border);
+}
+.mentor-name { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
+.mentor-org { font-size: 12px; color: var(--text-mute); margin-bottom: 6px; }
+.mentor-field { font-size: 11px; padding: 3px 10px; border-radius: 20px; display: inline-block; }
+.mentor-stats { display: flex; justify-content: center; gap: 16px; margin-top: 12px; font-size: 12px; color: var(--text-mute); }
+.mentor-stats strong { color: var(--text-main); font-weight: 700; }
+
+/* ── 하단 CTA 섹션 ── */
+.cta-section {
+  background: linear-gradient(135deg, #0F3272 0%, #00704D 100%);
+  padding: 64px 0;
+}
+.cta-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+  text-align: center;
+}
+.cta-inner h2 {
+  font-size: 32px;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+.cta-inner p { font-size: 16px; color: rgba(255,255,255,0.7); margin-bottom: 36px; }
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.cta-btn-main {
+  background: #fff;
+  color: var(--primary);
+  border: none;
+  padding: 14px 32px;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cta-btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.cta-btn-sec {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+.cta-btn-sec:hover { background: rgba(255,255,255,0.18); }
+</style>
+</head>
+<body>
+
+<!-- ▌헤더 B (투명형) -->
+<header class="site-header header-b">
+  <div class="header-inner">
+    <div class="site-logo">
+      <span class="logo-badge">KIRD</span>
+      해외연구인력 통합지원 플랫폼
+    </div>
+    <nav class="site-nav">
+      <a href="#">홈</a>
+      <a href="sub1-living.html">생활정착</a>
+      <a href="sub2-consulting.html">연구·경력개발</a>
+      <a href="sub3-education.html">교육</a>
+      <a href="sub5-jobs.html">채용정보</a>
+      <a href="sub6-community.html">커뮤니티</a>
+      <a href="#">공지·문의</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch">
+        <span class="on">KO</span><span>EN</span><span>中</span>
+      </div>
+      <div class="icon-bell">🔔</div>
+      <button class="btn-login">로그인</button>
+      <button class="btn-signup">회원가입</button>
+    </div>
+  </div>
+</header>
+
+<!-- ▌히어로 B — 풀스크린 여정형 -->
+<section class="hero-b">
+  <div class="hero-b-bg"></div>
+  <div class="orb1"></div>
+  <div class="orb2"></div>
+  <div class="orb3"></div>
+  <div class="hero-b-inner">
+    <div class="hero-b-left">
+      <div class="hero-b-eyebrow">
+        <span class="pill">🔬 KIRD</span>
+        <span class="pill green">● 2026년 서비스 오픈</span>
+      </div>
+      <h1 class="hero-b-title">
+        Settling in Korea,<br>
+        <span class="highlight">Growing Your</span><br>
+        Research Career.
+      </h1>
+      <p class="hero-b-sub">
+        한국 생활 적응부터 연구 경력 성장까지,<br>
+        당신의 여정 전 과정을 통합 지원합니다.
+      </p>
+      <div class="hero-b-search">
+        <input type="text" placeholder="지금 필요한 정보를 검색하세요...">
+        <button>검색</button>
+      </div>
+      <div class="hero-b-tags">
+        <span class="label">빠른 탐색:</span>
+        <span class="hero-b-tag">🛂 비자</span>
+        <span class="hero-b-tag">🏥 병원</span>
+        <span class="hero-b-tag">📚 교육</span>
+        <span class="hero-b-tag">🔬 연구과제</span>
+        <span class="hero-b-tag">💼 채용</span>
+        <span class="hero-b-tag">💬 컨설팅</span>
+      </div>
+      <div class="hero-b-cta">
+        <button class="hero-b-cta-main">🗺️ 내 상황에 맞는 지원 찾기</button>
+        <button class="hero-b-cta-sub" onclick="location.href='main-a.html'">📋 서비스 전체 보기</button>
+      </div>
+    </div>
+
+    <!-- 우측: 진단형 카드 -->
+    <div class="hero-b-right">
+      <div class="diagnosis-card">
+        <h3>🤔 지금 어떤 도움이 필요하세요?</h3>
+        <p>상황을 선택하면 맞춤 서비스로 바로 연결됩니다</p>
+        <div class="diag-options">
+          <div class="diag-opt" onclick="location.href='sub1-living.html'">
+            <span class="emoji">🏡</span>
+            <div class="info">
+              <div class="title">막 한국에 도착했어요</div>
+              <div class="desc">비자·주거·의료·금융 생활정착 정보</div>
+            </div>
+            <span class="arrow">›</span>
+          </div>
+          <div class="diag-opt" onclick="location.href='sub4-rd.html'">
+            <span class="emoji">🔬</span>
+            <div class="info">
+              <div class="title">연구환경에 적응이 필요해요</div>
+              <div class="desc">국가 R&D 정보·절차·연구실 생활</div>
+            </div>
+            <span class="arrow">›</span>
+          </div>
+          <div class="diag-opt" onclick="location.href='sub3-education.html'">
+            <span class="emoji">📚</span>
+            <div class="info">
+              <div class="title">교육을 받고 싶어요</div>
+              <div class="desc">프로그램 신청·수강·수료증</div>
+            </div>
+            <span class="arrow">›</span>
+          </div>
+          <div class="diag-opt" onclick="location.href='sub5-jobs.html'">
+            <span class="emoji">💼</span>
+            <div class="info">
+              <div class="title">커리어를 성장시키고 싶어요</div>
+              <div class="desc">채용공고·컨설팅·경력 콘텐츠</div>
+            </div>
+            <span class="arrow">›</span>
+          </div>
+          <div class="diag-opt" onclick="location.href='sub2-consulting.html'">
+            <span class="emoji">💬</span>
+            <div class="info">
+              <div class="title">전문가 상담이 필요해요</div>
+              <div class="desc">생활/경력 컨설팅 Q&A 바로가기</div>
+            </div>
+            <span class="arrow">›</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ▌여정 맵 섹션 -->
+<section class="journey-section">
+  <div class="journey-inner">
+    <div class="journey-header">
+      <h2>🗺️ 정착에서 성장까지, 함께하는 4단계 여정</h2>
+      <p>해외연구인력이 한국에서 안정적으로 정착하고 성장할 수 있도록 단계별 지원을 제공합니다</p>
+    </div>
+    <div class="journey-steps">
+      <!-- Step 1 -->
+      <div class="journey-step j1">
+        <div class="journey-num">🏠</div>
+        <div class="journey-step-label">Step 1. 한국 생활 정착</div>
+        <div class="journey-step-sub">비자, 주거, 의료, 금융<br>자녀 교육 등 생활 전반</div>
+        <div class="journey-cards">
+          <div class="journey-mini" onclick="location.href='sub1-living.html'"><span class="icon">🛂</span> 비자·출입국 안내</div>
+          <div class="journey-mini" onclick="location.href='sub1-living.html'"><span class="icon">🏘️</span> 주거·전월세 가이드</div>
+          <div class="journey-mini" onclick="location.href='sub1-living.html'"><span class="icon">🏥</span> 의료·건강보험</div>
+          <div class="journey-mini" onclick="location.href='sub1-living.html'"><span class="icon">🏦</span> 금융·은행 개설</div>
+          <div class="journey-mini" onclick="location.href='sub2-consulting.html'"><span class="icon">💬</span> 생활정착 컨설팅</div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="journey-step j2">
+        <div class="journey-num">🔬</div>
+        <div class="journey-step-label">Step 2. 연구 환경 적응</div>
+        <div class="journey-step-sub">국가 R&D 정보, 제도 안내<br>참여 절차 가이드</div>
+        <div class="journey-cards">
+          <div class="journey-mini" onclick="location.href='sub4-rd.html'"><span class="icon">📋</span> 국가 R&D 사업 공고</div>
+          <div class="journey-mini" onclick="location.href='sub4-rd.html'"><span class="icon">🗂️</span> 참여 절차 5단계</div>
+          <div class="journey-mini" onclick="location.href='sub4-rd.html'"><span class="icon">📄</span> 가이드북·PDF</div>
+          <div class="journey-mini" onclick="location.href='sub4-rd.html'"><span class="icon">🔗</span> NTIS·ZEUS 연계</div>
+          <div class="journey-mini" onclick="location.href='sub3-education.html'"><span class="icon">📚</span> 경력개발 콘텐츠</div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="journey-step j3">
+        <div class="journey-num">📚</div>
+        <div class="journey-step-label">Step 3. 역량 강화</div>
+        <div class="journey-step-sub">교육 프로그램 신청<br>수강·수료·참가증</div>
+        <div class="journey-cards">
+          <div class="journey-mini" onclick="location.href='sub3-education.html'"><span class="icon">📋</span> 교육 목록 탐색</div>
+          <div class="journey-mini" onclick="location.href='sub3-education.html'"><span class="icon">✅</span> 교육 신청·접수</div>
+          <div class="journey-mini" onclick="location.href='sub3-education.html'"><span class="icon">🎓</span> 수료증 발급</div>
+          <div class="journey-mini" onclick="location.href='sub3-education.html'"><span class="icon">📥</span> 교육자료 다운로드</div>
+          <div class="journey-mini" onclick="location.href='sub2-consulting.html'"><span class="icon">💡</span> 경력개발 컨설팅</div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="journey-step j4">
+        <div class="journey-num">💼</div>
+        <div class="journey-step-label">Step 4. 커리어 성장</div>
+        <div class="journey-step-sub">채용공고, 연구실 정보<br>전문가 매칭 컨설팅</div>
+        <div class="journey-cards">
+          <div class="journey-mini" onclick="location.href='sub5-jobs.html'"><span class="icon">🔍</span> 채용공고 탐색</div>
+          <div class="journey-mini" onclick="location.href='sub5-jobs.html'"><span class="icon">🏛️</span> 연구실 정보</div>
+          <div class="journey-mini" onclick="location.href='sub2-consulting.html'"><span class="icon">🤝</span> 취업 컨설팅</div>
+          <div class="journey-mini" onclick="location.href='sub6-community.html'"><span class="icon">🌐</span> 네트워킹 커뮤니티</div>
+          <div class="journey-mini" onclick="location.href='sub6-community.html'"><span class="icon">🎖️</span> 배지·활동 이력</div>
+        </div>
+      </div>
+    </div>
+    <div class="journey-cta">
+      <button class="btn btn-primary btn-lg">나의 현재 단계에서 시작하기 →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ▌개인화 추천 보드 -->
+<section class="recommend-section">
+  <div class="recommend-inner">
+    <div class="recommend-header">
+      <div class="recommend-title"><em>맞춤</em> 추천 콘텐츠</div>
+      <div class="rec-tabs">
+        <span class="rec-tab active">전체</span>
+        <span class="rec-tab">생활정착</span>
+        <span class="rec-tab">경력개발</span>
+        <span class="rec-tab">교육</span>
+      </div>
+    </div>
+    <div class="recommend-grid">
+      <div class="rec-card" onclick="location.href='sub1-living.html'">
+        <div class="rec-card-color" style="background:linear-gradient(90deg,#1A4FA0,#2D6ED4)"></div>
+        <div class="rec-card-body">
+          <div class="rec-card-cat" style="color:var(--primary)">생활정착</div>
+          <div class="rec-card-title">외국인 연구인력 건강보험 가입 완전 가이드</div>
+          <div class="rec-card-desc">직장가입자·지역가입자 구분, 보험료 산정 방법, 병원 이용 팁 등을 한국어·영문으로 제공합니다.</div>
+          <div class="rec-card-footer">
+            <span class="badge badge-blue">의료</span>
+            <span>PDF 다운로드</span>
+          </div>
+        </div>
+      </div>
+      <div class="rec-card" onclick="location.href='sub2-consulting.html'">
+        <div class="rec-card-color" style="background:linear-gradient(90deg,#00A878,#007B5C)"></div>
+        <div class="rec-card-body">
+          <div class="rec-card-cat" style="color:var(--secondary)">경력개발</div>
+          <div class="rec-card-title">한국 정부출연연구소 취업 준비 완전 가이드</div>
+          <div class="rec-card-desc">NST 계열 연구소 지원 절차, 필요 서류, 면접 준비법을 경험한 외국인 연구자 사례 중심으로 소개합니다.</div>
+          <div class="rec-card-footer">
+            <span class="badge badge-green">경력 사례</span>
+            <span>추천 48</span>
+          </div>
+        </div>
+      </div>
+      <div class="rec-card" onclick="location.href='sub3-education.html'">
+        <div class="rec-card-color" style="background:linear-gradient(90deg,#7C3AED,#A78BFA)"></div>
+        <div class="rec-card-body">
+          <div class="rec-card-cat" style="color:#7C3AED">교육</div>
+          <div class="rec-card-title">연구커뮤니케이션 한국어 집중 과정 — 마감 D-3</div>
+          <div class="rec-card-desc">논문 작성, 학회 발표, 연구팀 커뮤니케이션에 필요한 한국어 표현을 집중 학습합니다.</div>
+          <div class="rec-card-footer">
+            <span class="badge badge-urgent">마감임박</span>
+            <span>온라인 · 무료</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ▌실시간 정보 섹션 -->
+<section class="realtime-section">
+  <div class="realtime-inner">
+    <div class="section-header" style="margin-bottom:24px">
+      <div class="section-title">⚡ 실시간 현황<span>오늘 업데이트된 정보</span></div>
+    </div>
+    <div class="realtime-grid">
+      <div class="rt-box">
+        <div class="rt-box-header">
+          <h4>💼 오늘의 신규 채용</h4>
+          <a href="sub5-jobs.html" class="section-link" style="font-size:12px">전체 →</a>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">KIST 나노재료 선임연구원 모집</div>
+          <div class="rt-meta"><span>연구직</span><span>서울</span><span class="rt-urgency">D-4</span></div>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">POSTECH 물리학과 박사후연구원 채용</div>
+          <div class="rt-meta"><span>연구직</span><span>포항</span><span class="rt-urgency">D-8</span></div>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">LG이노텍 재료공학 연구원 공채</div>
+          <div class="rt-meta"><span>산업직</span><span>서울</span><span class="rt-urgency">D-14</span></div>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">IBS 기초과학연구원 계약직 연구원</div>
+          <div class="rt-meta"><span>연구직</span><span>대전</span><span class="rt-urgency">D-21</span></div>
+        </div>
+      </div>
+
+      <div class="rt-box">
+        <div class="rt-box-header">
+          <h4>📚 마감임박 교육</h4>
+          <a href="sub3-education.html" class="section-link" style="font-size:12px">전체 →</a>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">외국인 연구자 한국어 연구 커뮤니케이션</div>
+          <div class="rt-meta"><span>온라인</span><span>무료</span><span class="rt-urgency">D-3</span></div>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">연구윤리 집중교육 (영문과정)</div>
+          <div class="rt-meta"><span>서울</span><span>무료</span><span class="rt-urgency">D-7</span></div>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">특허 출원 실무 (외국인 연구자)</div>
+          <div class="rt-meta"><span>온라인</span><span>무료</span><span class="rt-urgency">D-12</span></div>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">국가 R&D 사업 참여 신청 워크숍</div>
+          <div class="rt-meta"><span>대전</span><span>무료</span><span class="rt-urgency">D-15</span></div>
+        </div>
+      </div>
+
+      <div class="rt-box">
+        <div class="rt-box-header">
+          <h4>💬 최근 답변 컨설팅</h4>
+          <a href="sub2-consulting.html" class="section-link" style="font-size:12px">전체 →</a>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">정부출연연 취업 필요 서류와 절차가 궁금합니다</div>
+          <div class="rt-meta"><span>경력개발</span><span>추천 48</span></div>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">배우자 동반 입국 시 비자 신청 방법</div>
+          <div class="rt-meta"><span>생활정착</span><span>추천 32</span></div>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">외국인 연구자 전세보증보험 가입 가능한가요?</div>
+          <div class="rt-meta"><span>생활정착</span><span>추천 26</span></div>
+        </div>
+        <div class="rt-item">
+          <div class="rt-label">박사후연구원 → 정규직 전환 경험 공유해주세요</div>
+          <div class="rt-meta"><span>경력개발</span><span>추천 19</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ▌멘토/전문가 섹션 -->
+<section class="trust-section">
+  <div class="trust-inner">
+    <div class="section-header" style="margin-bottom:24px">
+      <div class="section-title">🏆 인기 멘토 · 전문가<span>추천수 · 만족도 기반 자동 산출</span></div>
+      <a href="sub2-consulting.html" class="section-link">전체 보기 →</a>
+    </div>
+    <div class="mentor-grid">
+      <div class="mentor-card">
+        <div class="mentor-avatar" style="background:linear-gradient(135deg,#EBF4FF,#BDD8FF)">👨‍🔬</div>
+        <div class="mentor-name">김민준 박사</div>
+        <div class="mentor-org">한국화학연구원</div>
+        <span class="mentor-field badge badge-blue">생활정착</span>
+        <div class="mentor-stats"><span>답변 <strong>128</strong></span><span>만족도 <strong>98%</strong></span></div>
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-avatar" style="background:linear-gradient(135deg,#E6F6F1,#A7E8D3)">👩‍💼</div>
+        <div class="mentor-name">이수영 선임</div>
+        <div class="mentor-org">KAIST 인사팀</div>
+        <span class="mentor-field badge badge-green">경력개발</span>
+        <div class="mentor-stats"><span>답변 <strong>95</strong></span><span>만족도 <strong>96%</strong></span></div>
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-avatar" style="background:linear-gradient(135deg,#F3E8FF,#DDD6FE)">👨‍⚖️</div>
+        <div class="mentor-name">Park Jaeho</div>
+        <div class="mentor-org">법무법인 글로벌</div>
+        <span class="mentor-field badge badge-blue">비자·법률</span>
+        <div class="mentor-stats"><span>답변 <strong>82</strong></span><span>만족도 <strong>97%</strong></span></div>
+      </div>
+      <div class="mentor-card">
+        <div class="mentor-avatar" style="background:linear-gradient(135deg,#FFF3E0,#FDE68A)">👩‍🔬</div>
+        <div class="mentor-name">Chen Wei 박사</div>
+        <div class="mentor-org">POSTECH 화학과</div>
+        <span class="mentor-field badge badge-orange">연구 경력</span>
+        <div class="mentor-stats"><span>답변 <strong>74</strong></span><span>만족도 <strong>94%</strong></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ▌하단 CTA 섹션 -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2>지금 바로 시작하세요</h2>
+    <p>회원가입 후 나에게 맞는 정착·성장 지원 서비스를 모두 이용하세요</p>
+    <div class="cta-buttons">
+      <button class="cta-btn-main">✅ 회원가입하고 맞춤 지원 받기</button>
+      <button class="cta-btn-sec" onclick="location.href='sub5-jobs.html'">🏛️ 기관으로 공고 등록하기</button>
+      <button class="cta-btn-sec" onclick="location.href='sub2-consulting.html'">🤝 전문가로 참여하기</button>
+    </div>
+  </div>
+</section>
+
+<!-- ▌푸터 -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">🔬 해외연구인력 통합지원 플랫폼</div>
+        <div>운영: 한국연구인력개발원 (KIRD) | 2026년 구축 사업</div>
+      </div>
+      <div class="footer-links">
+        <a href="#">이용약관</a>
+        <a href="#">개인정보처리방침</a>
+        <a href="#">서비스 소개</a>
+        <a href="#">운영자 문의</a>
+        <a href="#">사이트맵</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      Copyright © 2026 KIRD. All rights reserved. · 다국어 지원: KO · EN · 中 · 日
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
