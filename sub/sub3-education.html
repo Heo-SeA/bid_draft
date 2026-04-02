@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sub3 — Education &amp; Career Content Hub | KIRD Integrated Support Platform</title>
+<link rel="stylesheet" href="css/common.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Sub3 Education exclusive styles ── */
+.hero-edu {
+  background: linear-gradient(135deg, #7C3AED 0%, #4F46E5 60%, #1A4FA0 100%);
+  padding: 36px 0;
+}
+.hero-edu-inner { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+/* Sub tabs */
+.edu-sub-tab { background: #fff; border-bottom: 1px solid var(--border); }
+.edu-sub-tab-inner {
+  max-width: 1240px; margin: 0 auto; padding: 0 24px;
+  display: flex; gap: 0;
+}
+.est {
+  padding: 14px 24px; font-size: 14px; font-weight: 600;
+  color: var(--text-mute); cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap;
+}
+.est:hover { color: var(--primary); }
+.est.active { color: #7C3AED; border-bottom-color: #7C3AED; }
+
+/* Layout */
+.edu-layout { max-width: 1240px; margin: 0 auto; padding: 28px 24px; }
+
+/* Status tabs */
+.status-tab-row { display: flex; gap: 8px; margin-bottom: 20px; align-items: center; }
+.status-tab {
+  padding: 7px 18px; border-radius: 20px; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: 1px solid var(--border); background: #fff;
+  color: var(--text-mute); transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.status-tab.active { background: #7C3AED; color: #fff; border-color: #7C3AED; }
+.status-tab:hover:not(.active) { border-color: #7C3AED; color: #7C3AED; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; }
+.st-on { background: #22C55E; }
+.st-soon { background: #F59E0B; }
+.st-end { background: #9CA3AF; }
+
+/* Search + filter row */
+.edu-filter-row {
+  display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; align-items: center;
+}
+.edu-search {
+  display: flex; background: #fff; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); overflow: hidden; flex: 1; min-width: 240px;
+  transition: border-color 0.15s;
+}
+.edu-search:focus-within { border-color: #7C3AED; }
+.edu-search input {
+  flex: 1; border: none; outline: none; padding: 10px 14px;
+  font-size: 14px; background: transparent;
+}
+.edu-search button {
+  background: #7C3AED; color: #fff; border: none;
+  padding: 0 16px; cursor: pointer; font-size: 13px; transition: background 0.15s;
+}
+.edu-search button:hover { background: #6D28D9; }
+.edu-filter-select {
+  padding: 9px 12px; border: 1px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 13px; color: var(--text-sub);
+  background: #fff; cursor: pointer; outline: none;
+}
+
+/* Education card grid */
+.edu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+.edu-card {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md);
+  overflow: hidden; cursor: pointer; transition: all 0.18s; display: flex; flex-direction: column;
+}
+.edu-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: #7C3AED; }
+.edu-card-top {
+  height: 90px; display: flex; align-items: center;
+  justify-content: center; font-size: 36px; position: relative;
+}
+.edu-status-badge {
+  position: absolute; top: 10px; left: 10px;
+  font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+}
+.edu-status-badge.on { background: #D1FAE5; color: #065F46; }
+.edu-status-badge.soon { background: #FEF3C7; color: #92400E; }
+.edu-status-badge.urgent { background: #FFEBE6; color: #C23B22; }
+.deadline-label {
+  position: absolute; top: 10px; right: 10px;
+  font-size: 11px; font-weight: 700; color: #E53E3E;
+  background: #FEE2E2; padding: 2px 8px; border-radius: 10px;
+}
+.edu-card-body { padding: 16px; flex: 1; }
+.edu-org { font-size: 11px; color: var(--text-mute); font-weight: 600; margin-bottom: 5px; }
+.edu-title { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 8px; line-height: 1.4; }
+.edu-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.edu-tag { font-size: 11px; padding: 2px 8px; background: #F1F5F9; border-radius: 10px; color: var(--text-mute); }
+.edu-info-list { font-size: 12px; color: var(--text-mute); display: flex; flex-direction: column; gap: 4px; }
+.edu-info-list span { display: flex; align-items: center; gap: 6px; }
+.edu-card-footer {
+  padding: 12px 16px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.apply-btn {
+  background: #7C3AED; color: #fff; border: none;
+  padding: 7px 16px; border-radius: var(--radius-sm);
+  font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s;
+}
+.apply-btn:hover { background: #6D28D9; }
+.apply-btn:disabled { background: #9CA3AF; cursor: not-allowed; }
+
+/* Career content section */
+.career-section { margin-top: 40px; }
+.career-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.career-card {
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md);
+  overflow: hidden; cursor: pointer; transition: all 0.18s;
+}
+.career-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.career-card-top { padding: 16px 18px; border-bottom: 1px solid var(--border); }
+.career-type { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+.career-title { font-size: 14px; font-weight: 700; color: var(--text-main); line-height: 1.4; margin-bottom: 6px; }
+.career-author { font-size: 12px; color: var(--text-mute); display: flex; align-items: center; gap: 6px; }
+.career-card-body { padding: 14px 18px; }
+.career-summary { font-size: 13px; color: var(--text-sub); line-height: 1.6; margin-bottom: 10px; }
+.career-filters { display: flex; flex-wrap: wrap; gap: 5px; }
+.career-filter-tag { font-size: 11px; padding: 2px 8px; border-radius: 10px; background: #F1F5F9; color: var(--text-mute); }
+.career-card-footer {
+  padding: 10px 18px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; color: var(--text-mute);
+}
+
+/* My Training panel */
+.mypage-panel {
+  margin-top: 40px; background: linear-gradient(135deg, #EBF4FF, #F3E8FF);
+  border: 1px solid #C4B5FD; border-radius: var(--radius-md); padding: 24px;
+}
+.mypage-panel h3 { font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 4px; }
+.mypage-panel p { font-size: 13px; color: var(--text-mute); margin-bottom: 20px; }
+.mypage-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.mpc { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
+.mpc .label { font-size: 11px; color: var(--text-mute); font-weight: 600; margin-bottom: 4px; }
+.mpc .value { font-size: 20px; font-weight: 800; color: var(--text-main); }
+.mpc .sub { font-size: 12px; color: var(--text-mute); margin-top: 2px; }
+
+/* Education detail modal */
+.edu-modal-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+  z-index: 200; align-items: center; justify-content: center;
+}
+.edu-modal-overlay.open { display: flex; }
+.edu-modal {
+  background: #fff; border-radius: var(--radius-lg); width: 640px;
+  max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow-lg);
+}
+.edu-modal-header {
+  padding: 22px 24px 18px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: #fff; z-index: 1;
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.edu-modal-header h3 { font-size: 19px; font-weight: 800; color: var(--text-main); line-height: 1.4; }
+.edu-modal-body { padding: 22px 24px; }
+.edu-info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.edu-info-item { background: var(--bg); border-radius: var(--radius-sm); padding: 12px 14px; }
+.edu-info-item .item-label { font-size: 11px; color: var(--text-mute); font-weight: 600; margin-bottom: 4px; }
+.edu-info-item .item-value { font-size: 14px; font-weight: 700; color: var(--text-main); }
+.process-steps { display: flex; align-items: center; gap: 4px; margin: 16px 0; flex-wrap: wrap; }
+.process-step { padding: 5px 12px; background: #EBF4FF; color: var(--primary); border-radius: 4px; font-size: 12px; font-weight: 600; }
+.process-arrow { color: var(--text-mute); font-size: 12px; }
+.edu-modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ▌Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-logo">
+      <span class="logo-badge">KIRD</span>
+      Integrated Support Platform for Foreign Researchers
+    </div>
+    <nav class="site-nav">
+      <a href="index.html">Home</a>
+      <a href="sub1-living.html">Settlement</a>
+      <a href="sub2-consulting.html">Consulting</a>
+      <a href="#" class="active">Education</a>
+      <a href="sub5-jobs.html">Jobs</a>
+      <a href="sub6-community.html">Community</a>
+      <a href="#">Notice &amp; Inquiry</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch"><span>KO</span><span class="on">EN</span><span>中</span></div>
+      <div class="icon-bell">🔔</div>
+      <button class="btn-login">Log In</button>
+      <button class="btn-signup">Sign Up</button>
+    </div>
+  </div>
+</header>
+
+<!-- ▌Hero -->
+<section class="hero-edu">
+  <div class="hero-edu-inner">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a><span>›</span><span>Education</span>
+    </div>
+    <h1 style="font-size:26px;font-weight:900;color:#fff;margin-bottom:8px">📚 Education &amp; Career Content Hub</h1>
+    <p style="font-size:15px;color:rgba(255,255,255,0.8)">For foreign researchers — apply, attend, and complete training programs; explore career growth content</p>
+    <div style="display:flex;gap:24px;margin-top:16px">
+      <div style="color:rgba(255,255,255,0.7);font-size:13px">Active Programs <strong style="color:#fff">89</strong></div>
+      <div style="color:rgba(255,255,255,0.7);font-size:13px">Total Completions <strong style="color:#fff">4,820</strong></div>
+      <div style="color:rgba(255,255,255,0.7);font-size:13px">Career Content Items <strong style="color:#fff">324</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ▌Sub Tabs -->
+<div class="edu-sub-tab">
+  <div class="edu-sub-tab-inner">
+    <div class="est active" onclick="switchEst(this)">📋 Training Programs</div>
+    <div class="est" onclick="switchEst(this)">📖 Career Development Content</div>
+    <div class="est" onclick="switchEst(this)">👤 My Training</div>
+  </div>
+</div>
+
+<!-- ▌Main Layout -->
+<div class="edu-layout">
+
+  <!-- ── Training Programs Section ── -->
+  <div id="secEducation">
+    <div class="status-tab-row">
+      <div class="status-tab active" onclick="switchStatus(this)"><span class="status-dot st-on"></span> Ongoing (24)</div>
+      <div class="status-tab" onclick="switchStatus(this)"><span class="status-dot st-soon"></span> Upcoming (38)</div>
+      <div class="status-tab" onclick="switchStatus(this)"><span class="status-dot st-end"></span> Closed (27)</div>
+      <button class="btn btn-primary btn-sm" style="margin-left:auto;background:#7C3AED;border-color:#7C3AED" onclick="openEduModal()">My Applications</button>
+    </div>
+
+    <div class="edu-filter-row">
+      <div class="edu-search">
+        <input type="text" placeholder="Search by program name or institution">
+        <button>Search</button>
+      </div>
+      <select class="edu-filter-select">
+        <option>All Institutions</option>
+        <option>KIRD</option>
+        <option>KAIST</option>
+        <option>POSTECH</option>
+        <option>KIST</option>
+      </select>
+      <select class="edu-filter-select">
+        <option>All Fields</option>
+        <option>Research Communication</option>
+        <option>Research Ethics</option>
+        <option>Patent &amp; Technology Transfer</option>
+        <option>R&amp;D Project Management</option>
+      </select>
+      <select class="edu-filter-select">
+        <option>All Formats</option>
+        <option>Online</option>
+        <option>In-person</option>
+        <option>Hybrid</option>
+      </select>
+    </div>
+
+    <div class="edu-grid">
+
+      <!-- Card 1 -->
+      <div class="edu-card" onclick="openEduModal()">
+        <div class="edu-card-top" style="background:linear-gradient(135deg,#F3E8FF,#EDE9FE)">
+          📣
+          <span class="edu-status-badge urgent">Ongoing</span>
+          <span class="deadline-label">D-3</span>
+        </div>
+        <div class="edu-card-body">
+          <div class="edu-org">KIRD</div>
+          <div class="edu-title">Korean Research Communication for Foreign Researchers</div>
+          <div class="edu-tags">
+            <span class="edu-tag">Online</span>
+            <span class="edu-tag">Free</span>
+            <span class="edu-tag">Conducted in English</span>
+          </div>
+          <div class="edu-info-list">
+            <span>📅 Application: 2025.10.20 – 11.08</span>
+            <span>🗓️ Training: 2025.11.11 – 11.13</span>
+            <span>👥 Capacity: 40 (36 applied)</span>
+          </div>
+        </div>
+        <div class="edu-card-footer">
+          <span style="font-size:12px;color:var(--danger);font-weight:700">⚠ Closing Soon · 4 seats left</span>
+          <button class="apply-btn">Apply Now</button>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="edu-card" onclick="openEduModal()">
+        <div class="edu-card-top" style="background:linear-gradient(135deg,#EBF4FF,#DBEAFE)">
+          🔬
+          <span class="edu-status-badge on">Ongoing</span>
+          <span class="deadline-label">D-7</span>
+        </div>
+        <div class="edu-card-body">
+          <div class="edu-org">KIRD · Research Ethics</div>
+          <div class="edu-title">Research Ethics Intensive (English Track)</div>
+          <div class="edu-tags">
+            <span class="edu-tag">Seoul</span>
+            <span class="edu-tag">Free</span>
+            <span class="edu-tag">Certificate Issued</span>
+          </div>
+          <div class="edu-info-list">
+            <span>📅 Application: 2025.10.25 – 11.14</span>
+            <span>🗓️ Training: 2025.11.18 – 11.19</span>
+            <span>👥 Capacity: 60 (42 applied)</span>
+          </div>
+        </div>
+        <div class="edu-card-footer">
+          <span style="font-size:12px;color:var(--text-mute)">18 seats available</span>
+          <button class="apply-btn">Apply Now</button>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="edu-card" onclick="openEduModal()">
+        <div class="edu-card-top" style="background:linear-gradient(135deg,#E6F6F1,#D1FAE5)">
+          📜
+          <span class="edu-status-badge on">Ongoing</span>
+          <span class="deadline-label">D-12</span>
+        </div>
+        <div class="edu-card-body">
+          <div class="edu-org">KIRD · Patent &amp; Tech Transfer</div>
+          <div class="edu-title">Patent Filing Practice for Foreign Researchers</div>
+          <div class="edu-tags">
+            <span class="edu-tag">Online</span>
+            <span class="edu-tag">Free</span>
+            <span class="edu-tag">English Materials</span>
+          </div>
+          <div class="edu-info-list">
+            <span>📅 Application: 2025.10.30 – 11.19</span>
+            <span>🗓️ Training: 2025.11.25</span>
+            <span>👥 Capacity: 80 (55 applied)</span>
+          </div>
+        </div>
+        <div class="edu-card-footer">
+          <span style="font-size:12px;color:var(--text-mute)">25 seats available</span>
+          <button class="apply-btn">Apply Now</button>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="edu-card" onclick="openEduModal()">
+        <div class="edu-card-top" style="background:linear-gradient(135deg,#FFF3E0,#FDE68A)">
+          🏛️
+          <span class="edu-status-badge soon">Upcoming</span>
+        </div>
+        <div class="edu-card-body">
+          <div class="edu-org">KIRD · R&amp;D Management</div>
+          <div class="edu-title">National R&amp;D Application Practical Workshop</div>
+          <div class="edu-tags">
+            <span class="edu-tag">Daejeon</span>
+            <span class="edu-tag">Free</span>
+            <span class="edu-tag">Completion Certificate</span>
+          </div>
+          <div class="edu-info-list">
+            <span>📅 Application: 2025.11.10 – 12.01</span>
+            <span>🗓️ Training: 2025.12.05 – 12.06</span>
+            <span>👥 Capacity: 50</span>
+          </div>
+        </div>
+        <div class="edu-card-footer">
+          <span style="font-size:12px;color:var(--text-mute)">Registration not yet open</span>
+          <button class="apply-btn">Get Notified</button>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="edu-card" onclick="openEduModal()">
+        <div class="edu-card-top" style="background:linear-gradient(135deg,#FEF2F2,#FECACA)">
+          🤝
+          <span class="edu-status-badge soon">Upcoming</span>
+        </div>
+        <div class="edu-card-body">
+          <div class="edu-org">KIRD · Networking</div>
+          <div class="edu-title">Year-end Networking &amp; Career Forum for Foreign Researchers</div>
+          <div class="edu-tags">
+            <span class="edu-tag">Seoul</span>
+            <span class="edu-tag">Free</span>
+          </div>
+          <div class="edu-info-list">
+            <span>📅 Application: 2025.11.15 – 12.01</span>
+            <span>🗓️ Event: 2025.12.06</span>
+            <span>👥 Capacity: 100</span>
+          </div>
+        </div>
+        <div class="edu-card-footer">
+          <span style="font-size:12px;color:var(--text-mute)">Registration not yet open</span>
+          <button class="apply-btn">Get Notified</button>
+        </div>
+      </div>
+
+      <!-- Card 6 (Closed) -->
+      <div class="edu-card" style="opacity:0.65" onclick="openEduModal()">
+        <div class="edu-card-top" style="background:#F1F5F9">
+          📊
+          <span class="edu-status-badge" style="background:#F1F5F9;color:#6B7280">Closed</span>
+        </div>
+        <div class="edu-card-body">
+          <div class="edu-org">KIRD · Data Analytics</div>
+          <div class="edu-title">Introduction to Data Analysis for Researchers (Python)</div>
+          <div class="edu-tags">
+            <span class="edu-tag">Online</span>
+            <span class="edu-tag">Certificate Issued</span>
+          </div>
+          <div class="edu-info-list">
+            <span>🗓️ Training: 2025.09.10 – 09.12</span>
+            <span>✅ Completions: 68</span>
+          </div>
+        </div>
+        <div class="edu-card-footer">
+          <span style="font-size:12px;color:var(--text-mute)">Program closed</span>
+          <button class="apply-btn" disabled>Closed</button>
+        </div>
+      </div>
+
+    </div>
+    <div class="pagination">
+      <button class="page-btn">‹</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">›</button>
+    </div>
+  </div>
+
+  <!-- ── Career Development Content Section ── -->
+  <div class="career-section">
+    <div class="section-header">
+      <div class="section-title">📖 Career Development &amp; Settlement Case Content<span>Interviews, case studies &amp; informational articles</span></div>
+      <div style="display:flex;gap:8px">
+        <select class="edu-filter-select">
+          <option>All Nationalities</option>
+          <option>China</option>
+          <option>Germany</option>
+          <option>USA</option>
+          <option>India</option>
+        </select>
+        <select class="edu-filter-select">
+          <option>All Research Fields</option>
+          <option>Materials Engineering</option>
+          <option>Life Sciences</option>
+          <option>AI / IT</option>
+        </select>
+      </div>
+    </div>
+    <div class="career-grid">
+      <div class="career-card">
+        <div class="career-card-top">
+          <div class="career-type" style="color:#7C3AED">📋 Interview</div>
+          <div class="career-title">One-Year Settlement Story: A Russian Researcher at KIST</div>
+          <div class="career-author">
+            <span class="avatar avatar-sm">A</span>
+            <span>Alexei V. · KIST · Materials Engineering</span>
+          </div>
+        </div>
+        <div class="career-card-body">
+          <div class="career-summary">A candid account of the first year in Seoul with family — covering visa, rental contracts, hospitals, and children's schooling.</div>
+          <div class="career-filters">
+            <span class="career-filter-tag">Russia</span>
+            <span class="career-filter-tag">Materials Eng.</span>
+            <span class="career-filter-tag">KIST</span>
+            <span class="career-filter-tag">Family Accompanying</span>
+          </div>
+        </div>
+        <div class="career-card-footer">
+          <span>2025.10.15</span>
+          <div style="display:flex;gap:10px">
+            <span>👁️ 1,240</span>
+            <span style="color:var(--primary);font-weight:600">Read More →</span>
+          </div>
+        </div>
+      </div>
+      <div class="career-card">
+        <div class="career-card-top">
+          <div class="career-type" style="color:var(--secondary)">💼 Career Case</div>
+          <div class="career-title">From China to Samsung — A 3-Year Journey of an AI Researcher</div>
+          <div class="career-author">
+            <span class="avatar avatar-sm" style="background:linear-gradient(135deg,#E6F6F1,#A7E8D3);color:var(--secondary)">L</span>
+            <span>Li Mingzhu · Samsung SAIT · AI</span>
+          </div>
+        </div>
+        <div class="career-card-body">
+          <div class="career-summary">From a KAIST PhD program to Samsung Advanced Institute of Technology — practical advice for foreign researchers pursuing Korean industry careers.</div>
+          <div class="career-filters">
+            <span class="career-filter-tag">China</span>
+            <span class="career-filter-tag">AI / IT</span>
+            <span class="career-filter-tag">Industry Career</span>
+          </div>
+        </div>
+        <div class="career-card-footer">
+          <span>2025.09.28</span>
+          <div style="display:flex;gap:10px">
+            <span>👁️ 2,180</span>
+            <span style="color:var(--primary);font-weight:600">Read More →</span>
+          </div>
+        </div>
+      </div>
+      <div class="career-card">
+        <div class="career-card-top">
+          <div class="career-type" style="color:var(--primary)">ℹ️ Info Guide</div>
+          <div class="career-title">Government Research Institute vs. University Lab — A Comparison Guide for Foreign Researchers</div>
+          <div class="career-author">
+            <span class="avatar avatar-sm">K</span>
+            <span>KIRD Editorial Team (Official)</span>
+          </div>
+        </div>
+        <div class="career-card-body">
+          <div class="career-summary">A side-by-side comparison of Korean research career types across 6 criteria: salary, benefits, visa, mobility, and research environment.</div>
+          <div class="career-filters">
+            <span class="career-filter-tag">Career Comparison</span>
+            <span class="career-filter-tag">Job Guide</span>
+            <span class="career-filter-tag">All Nationalities</span>
+          </div>
+        </div>
+        <div class="career-card-footer">
+          <span>2025.09.10</span>
+          <div style="display:flex;gap:10px">
+            <span>👁️ 3,640</span>
+            <span style="color:var(--primary);font-weight:600">Read More →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── My Training Panel ── -->
+  <div class="mypage-panel">
+    <h3>🎓 My Training</h3>
+    <p>Log in to view your enrolled programs, completion records, and download your certificates</p>
+    <div class="mypage-cards">
+      <div class="mpc">
+        <div class="label">Enrolled Programs</div>
+        <div class="value">3</div>
+        <div class="sub">Ongoing 1 · Upcoming 2</div>
+      </div>
+      <div class="mpc">
+        <div class="label">Completed</div>
+        <div class="value">5</div>
+        <div class="sub">5 certificates available</div>
+      </div>
+      <div class="mpc">
+        <div class="label">Downloadable Materials</div>
+        <div class="value">12</div>
+        <div class="sub">Training material PDFs</div>
+      </div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:10px">
+      <button class="btn btn-primary" style="background:#7C3AED">🎓 Download Certificates</button>
+      <button class="btn btn-ghost">📋 View Full Training History</button>
+    </div>
+    <div style="margin-top:12px">
+      <div style="font-size:13px;font-weight:600;color:var(--text-sub);margin-bottom:8px">Apply → Complete → Certificate Automated Flow</div>
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        <span class="process-step">Apply</span>
+        <span class="process-arrow">→</span>
+        <span class="process-step">Confirmed</span>
+        <span class="process-arrow">→</span>
+        <span class="process-step">Attend Training</span>
+        <span class="process-arrow">→</span>
+        <span class="process-step">Completion Processed</span>
+        <span class="process-arrow">→</span>
+        <span class="process-step" style="background:#D1FAE5;color:#065F46">📄 Certificate PDF</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ▌Education Detail Modal -->
+<div class="edu-modal-overlay" id="eduModalOverlay">
+  <div class="edu-modal">
+    <div class="edu-modal-header">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#7C3AED;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">📋 Training Program Details</div>
+        <h3>Korean Research Communication for Foreign Researchers</h3>
+      </div>
+      <span style="font-size:20px;cursor:pointer;color:var(--text-mute)" onclick="closeEduModal()">✕</span>
+    </div>
+    <div class="edu-modal-body">
+      <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+        <span class="edu-status-badge urgent" style="position:static">Ongoing</span>
+        <span class="deadline-label" style="position:static">D-3 Closing Soon</span>
+        <span class="badge badge-gray">Online</span>
+        <span class="badge badge-green">Free</span>
+        <span class="badge badge-blue">Certificate Issued</span>
+      </div>
+      <div class="edu-info-row">
+        <div class="edu-info-item">
+          <div class="item-label">Organizing Institution</div>
+          <div class="item-value">KIRD (Korea Institute of R&D Human Resources)</div>
+        </div>
+        <div class="edu-info-item">
+          <div class="item-label">Application Period</div>
+          <div class="item-value">2025.10.20 – 11.08</div>
+        </div>
+        <div class="edu-info-item">
+          <div class="item-label">Training Dates</div>
+          <div class="item-value">2025.11.11 – 11.13</div>
+        </div>
+        <div class="edu-info-item">
+          <div class="item-label">Capacity / Applied</div>
+          <div class="item-value">40 seats / 36 applied</div>
+        </div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--text-sub);margin-bottom:6px">Program Description</div>
+      <div style="font-size:14px;color:var(--text-sub);line-height:1.8;margin-bottom:16px">
+        An intensive Korean research communication course for foreign researchers working at Korean institutions. Covers practical Korean expressions for paper writing, conference presentations, and internal team communication.
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--text-sub);margin-bottom:8px">Apply → Complete → Certificate Automated Flow</div>
+      <div class="process-steps">
+        <span class="process-step">Apply</span>
+        <span class="process-arrow">→</span>
+        <span class="process-step">Confirmed</span>
+        <span class="process-arrow">→</span>
+        <span class="process-step">Attend Online</span>
+        <span class="process-arrow">→</span>
+        <span class="process-step">Completion Processed</span>
+        <span class="process-arrow">→</span>
+        <span class="process-step" style="background:#D1FAE5;color:#065F46">📄 Certificate PDF</span>
+      </div>
+      <div style="background:#FFF8E6;border:1px solid #FDE68A;border-radius:var(--radius-sm);padding:12px;font-size:12px;color:#92400E;margin-top:16px">
+        ⚠️ Sign-up and login are required after clicking Apply. Upon completion, your training record will be automatically added to your profile.
+      </div>
+    </div>
+    <div class="edu-modal-footer">
+      <button class="apply-btn" style="font-size:15px;padding:10px 22px" onclick="location.href='edu-apply.html'">✅ Apply Now</button>
+      <button class="btn btn-ghost">📥 Preview Materials</button>
+      <button class="btn btn-ghost" onclick="closeEduModal()" style="margin-left:auto">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ▌Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">🔬 KIRD Integrated Support Platform for Foreign Researchers</div>
+        <div>Operated by: Korea Institute of Research and Development (KIRD)</div>
+      </div>
+      <div class="footer-links">
+        <a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="#">Contact Admin</a>
+      </div>
+    </div>
+    <div class="footer-bottom">Copyright © 2026 KIRD. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+function switchEst(el) {
+  document.querySelectorAll('.est').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function switchStatus(el) {
+  document.querySelectorAll('.status-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function openEduModal() { document.getElementById('eduModalOverlay').classList.add('open'); }
+function closeEduModal() { document.getElementById('eduModalOverlay').classList.remove('open'); }
+document.getElementById('eduModalOverlay').addEventListener('click', function(e){
+  if(e.target===this) closeEduModal();
+});
+</script>
+</body>
+</html>

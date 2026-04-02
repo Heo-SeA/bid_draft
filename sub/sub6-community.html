@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community | Support Platform for Foreign Research Talent</title>
+<link rel="stylesheet" href="css/common.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Sub6 Community Specific ── */
+.hero-comm {
+  background: linear-gradient(135deg, #1E3A5F 0%, #0D5FAA 50%, #00A878 100%);
+  padding: 36px 0;
+}
+.hero-comm-inner { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+/* Community Tab Bar */
+.comm-tab-bar {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+}
+.comm-tab-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+.comm-tab {
+  padding: 14px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-mute);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.comm-tab:hover { color: var(--primary); }
+.comm-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+.comm-tab .ct-badge {
+  background: #F1F5F9;
+  color: var(--text-mute);
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+.write-btn {
+  margin-left: auto;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+.write-btn:hover { background: var(--primary-dark); }
+
+/* Layout */
+.comm-layout {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 24px;
+}
+
+/* Board Filter */
+.board-filter {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.board-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-sub);
+  transition: all 0.15s;
+}
+.board-chip:hover, .board-chip.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.board-sort { margin-left: auto; display: flex; gap: 6px; }
+.bs {
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-mute);
+  transition: all 0.15s;
+}
+.bs.on { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* Post Card */
+.post-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.18s;
+  margin-bottom: 8px;
+}
+.post-card:hover { box-shadow: var(--shadow-md); border-color: var(--primary); }
+.post-card.pinned { border-color: var(--accent); background: #FFFBF0; }
+.post-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+.post-author-ava {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.post-meta-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.post-nickname { font-size: 13px; font-weight: 600; color: var(--text-sub); }
+.post-date { font-size: 12px; color: var(--text-mute); }
+.post-title { font-size: 16px; font-weight: 700; color: var(--text-main); line-height: 1.4; margin-bottom: 8px; }
+.post-preview { font-size: 13px; color: var(--text-mute); line-height: 1.5; }
+.post-footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #F7F9FC;
+  font-size: 12px;
+  color: var(--text-mute);
+}
+.post-stat { display: flex; align-items: center; gap: 4px; cursor: pointer; transition: color 0.15s; }
+.post-stat:hover { color: var(--primary); }
+.post-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-left: auto; }
+.pt { font-size: 11px; padding: 2px 8px; background: #F1F5F9; border-radius: 10px; color: var(--text-mute); }
+
+/* Post Detail (Inline) */
+.post-detail {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.pd-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  background: #FAFBFF;
+}
+.pd-header-top { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.pd-title { font-size: 20px; font-weight: 800; color: var(--text-main); line-height: 1.4; margin-bottom: 12px; }
+.pd-author-row { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-sub); }
+.pd-body { padding: 20px 24px; font-size: 14px; color: var(--text-sub); line-height: 1.8; }
+.pd-footer {
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Comments */
+.comment-section { padding: 0 24px 24px; }
+.comment-count { font-size: 14px; font-weight: 700; color: var(--text-main); margin-bottom: 14px; }
+.comment-block {
+  padding: 14px 0;
+  border-bottom: 1px solid #F7F9FC;
+}
+.comment-block:last-child { border-bottom: none; }
+.comment-author { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.comment-author .name { font-size: 13px; font-weight: 600; color: var(--text-sub); }
+.comment-author .date { font-size: 12px; color: var(--text-mute); }
+.comment-body { font-size: 14px; color: var(--text-sub); line-height: 1.6; padding-left: 42px; margin-bottom: 6px; }
+.comment-actions { display: flex; gap: 10px; padding-left: 42px; font-size: 12px; color: var(--text-mute); }
+.ca-btn { cursor: pointer; transition: color 0.15s; }
+.ca-btn:hover { color: var(--primary); }
+
+/* Replies */
+.reply-block {
+  margin-left: 42px;
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border-left: 2px solid var(--border);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.reply-block .comment-author { margin-bottom: 6px; }
+.reply-block .comment-body { padding-left: 0; font-size: 13px; }
+
+/* Comment Input */
+.comment-input-box {
+  border-top: 1px solid var(--border);
+  padding: 16px 24px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.comment-input-box textarea {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 14px;
+  outline: none;
+  resize: none;
+  min-height: 70px;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+.comment-input-box textarea:focus { border-color: var(--primary); }
+.comment-input-box button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  align-self: flex-end;
+}
+.comment-input-box button:hover { background: var(--primary-dark); }
+
+/* Badge Section */
+.badge-box {
+  background: linear-gradient(135deg, #FFF9E6, #FEF3C7);
+  border: 1px solid #FDE68A;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.badge-box h4 { font-size: 14px; font-weight: 700; color: #92400E; margin-bottom: 12px; }
+.badge-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background: #fff;
+  border: 1px solid #FDE68A;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.badge-item:hover { border-color: var(--accent); box-shadow: var(--shadow-sm); }
+.badge-item .bi-icon { font-size: 20px; }
+.badge-item .bi-name { font-size: 11px; color: #92400E; font-weight: 600; text-align: center; }
+.badge-item .bi-cond { font-size: 10px; color: #B45309; text-align: center; line-height: 1.3; }
+
+/* FAQ Mini Section */
+.faq-mini-box { background: #fff; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 16px; }
+.faq-mini-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--bg); }
+.faq-mini-header h4 { font-size: 14px; font-weight: 700; }
+.faq-mini-item {
+  padding: 11px 16px;
+  border-bottom: 1px solid #F7F9FC;
+  cursor: pointer;
+  transition: background 0.12s;
+  font-size: 13px;
+}
+.faq-mini-item:last-child { border-bottom: none; }
+.faq-mini-item:hover { background: #F7F9FC; }
+.faq-q-txt { color: var(--text-main); font-weight: 600; margin-bottom: 3px; display: flex; gap: 6px; }
+.faq-q-txt .qm { color: var(--primary); }
+.faq-a-txt { color: var(--text-mute); font-size: 12px; line-height: 1.4; }
+
+/* Write Post Modal */
+.write-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+.write-overlay.open { display: flex; }
+.write-modal {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  width: 620px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+.write-modal-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+}
+.write-modal-header h3 { font-size: 18px; font-weight: 800; }
+.write-modal-body { padding: 22px 24px; }
+.wm-group { margin-bottom: 16px; }
+.wm-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-sub); margin-bottom: 7px; }
+.wm-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+  font-family: inherit;
+  background: #fff;
+  box-sizing: border-box;
+}
+.wm-input:focus { border-color: var(--primary); }
+textarea.wm-input { resize: vertical; min-height: 200px; }
+.write-modal-footer { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+</style>
+</head>
+<body>
+
+<!-- ▌Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-logo">
+      <span class="logo-badge">KIRD</span>
+      Support Platform for Foreign Research Talent
+    </div>
+    <nav class="site-nav">
+      <a href="main-a.html">Home</a>
+      <a href="sub1-living.html">Settlement</a>
+      <a href="sub2-consulting.html">Research &amp; Career</a>
+      <a href="sub3-education.html">Education</a>
+      <a href="sub5-jobs.html">Jobs</a>
+      <a href="#" class="active">Community</a>
+      <a href="#">Notices &amp; Inquiries</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch"><span class="on">EN</span><span>KO</span><span>中</span></div>
+      <div class="icon-bell">🔔</div>
+      <button class="btn-login">Sign In</button>
+      <button class="btn-signup">Sign Up</button>
+    </div>
+  </div>
+</header>
+
+<!-- ▌Hero -->
+<section class="hero-comm">
+  <div class="hero-comm-inner">
+    <div class="breadcrumb">
+      <a href="main-a.html">Home</a><span>›</span><span>Community</span>
+    </div>
+    <h1 style="font-size:26px;font-weight:900;color:#fff;margin-bottom:8px">🤝 Community</h1>
+    <p style="font-size:15px;color:rgba(255,255,255,0.8)">Connect with fellow foreign researchers — share information, experiences, and build your network in Korea</p>
+    <div style="display:flex;gap:24px;margin-top:14px">
+      <div style="color:rgba(255,255,255,0.6);font-size:13px">Total Posts <strong style="color:#fff">12,480</strong></div>
+      <div style="color:rgba(255,255,255,0.6);font-size:13px">Active Members <strong style="color:#fff">2,840</strong></div>
+      <div style="color:rgba(255,255,255,0.6);font-size:13px">New Today <strong style="color:#fff">48</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ▌Tab Bar -->
+<div class="comm-tab-bar">
+  <div class="comm-tab-inner">
+    <div class="comm-tab active" onclick="switchComm(this)">📋 General Board <span class="ct-badge">8.2K</span></div>
+    <div class="comm-tab" onclick="switchComm(this)">❓ Q&amp;A <span class="ct-badge">2.1K</span></div>
+    <div class="comm-tab" onclick="switchComm(this)">🤝 Groups <span class="ct-badge">48</span></div>
+    <div class="comm-tab" onclick="switchComm(this)">📢 Announcements <span class="ct-badge">124</span></div>
+    <div class="comm-tab" onclick="switchComm(this)">🎉 Events <span class="ct-badge">32</span></div>
+    <button class="write-btn" onclick="openWrite()">✏️ Write Post</button>
+  </div>
+</div>
+
+<!-- ▌Main Layout -->
+<div class="comm-layout">
+
+  <!-- Left: Posts -->
+  <div>
+    <!-- Filter Bar -->
+    <div class="board-filter">
+      <span class="board-chip active">All</span>
+      <span class="board-chip">Settlement Stories</span>
+      <span class="board-chip">Research Life</span>
+      <span class="board-chip">Jobs &amp; Career</span>
+      <span class="board-chip">Food &amp; Culture</span>
+      <span class="board-chip">By Nationality</span>
+      <div class="board-sort">
+        <button class="bs on">Latest</button>
+        <button class="bs">Popular</button>
+        <button class="bs">Most Comments</button>
+      </div>
+    </div>
+
+    <!-- Pinned Notice -->
+    <div class="post-card pinned">
+      <div class="post-header">
+        <div class="post-author-ava" style="background:#FEF3C7">📢</div>
+        <div style="flex:1">
+          <div class="post-meta-top">
+            <span class="badge badge-orange">📌 Notice</span>
+            <span class="post-nickname">KIRD Operations Team</span>
+          </div>
+          <div class="post-title">[Required Reading] Community Guidelines and Usage Policy</div>
+          <div class="post-preview">Community guidelines for maintaining a healthy and respectful space. Please read before posting.</div>
+        </div>
+      </div>
+      <div class="post-footer">
+        <span class="post-stat">👁️ 4,280</span>
+        <span class="post-stat">💬 12</span>
+        <span style="margin-left:auto;font-size:12px;color:var(--text-mute)">Oct 1, 2025</span>
+      </div>
+    </div>
+
+    <!-- Featured Post (Expanded) -->
+    <div class="post-detail">
+      <div class="pd-header">
+        <div class="pd-header-top">
+          <span class="badge badge-blue">🔥 Trending</span>
+          <span class="badge badge-gray">General Board</span>
+          <span class="badge badge-gray">Settlement Stories</span>
+        </div>
+        <div class="pd-title">I signed my first jeonse (전세) lease in Korea — what an experience</div>
+        <div class="pd-author-row">
+          <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#EBF4FF,#BDD8FF);color:var(--primary)">🇩🇪</div>
+          <span class="post-nickname">Anon_Researcher_582</span>
+          <span class="post-date">Nov 3, 2025 · 14:22</span>
+          <span class="badge badge-gray" style="margin-left:4px">Germany</span>
+          <span class="badge badge-gray">Materials Engineering</span>
+        </div>
+      </div>
+      <div class="pd-body">
+        I finally completed a jeonse (전세 / lump-sum deposit lease) contract in Seoul after 3 months in Korea. The whole process — from finding a realtor to understanding the contract — was surprisingly complex.
+        <br><br>
+        I learned from this community about the importance of enrolling in the jeonse deposit insurance (전세보증보험) through HUG (Korea Housing Finance Corporation). It saved me from potential risk! For anyone going through the same thing, check the Settlement Info board — it's really helpful.
+      </div>
+      <div class="pd-footer">
+        <button class="helpful-btn" style="padding:5px 12px;border-radius:20px;display:flex;align-items:center;gap:5px;background:#EBF4FF;border:1px solid #BDD8FF;color:var(--primary);font-size:12px;font-weight:600;cursor:pointer">👍 Helpful (84)</button>
+        <button class="btn btn-ghost btn-sm">🔗 Share</button>
+        <button class="btn btn-ghost btn-sm">⚑ Report</button>
+        <span style="margin-left:auto;font-size:12px;color:var(--text-mute)">Views 1,840 · Comments 28</span>
+      </div>
+
+      <!-- Comments -->
+      <div class="comment-section">
+        <div class="comment-count">💬 28 Comments</div>
+
+        <div class="comment-block">
+          <div class="comment-author">
+            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#E6F6F1,#A7E8D3);color:var(--secondary)">🇨🇳</div>
+            <span class="name">Anon_Researcher_241</span>
+            <span class="date">Nov 3, 2025 · 15:14</span>
+          </div>
+          <div class="comment-body">I went through the same thing last year. Definitely get the jeonse deposit insurance! HUG (주택도시보증공사 / Korea Housing Finance Corp) allows foreign nationals to apply too.</div>
+          <div class="comment-actions">
+            <span class="ca-btn">👍 Helpful (18)</span>
+            <span class="ca-btn">↩ Reply</span>
+          </div>
+          <!-- Reply -->
+          <div class="reply-block">
+            <div class="comment-author">
+              <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#EBF4FF,#BDD8FF);color:var(--primary)">🇩🇪</div>
+              <span class="name">Anon_Researcher_582 (OP)</span>
+              <span class="date">Nov 3, 2025 · 16:02</span>
+            </div>
+            <div class="comment-body">Thanks for the tip! I applied to HUG right away 👍</div>
+          </div>
+        </div>
+
+        <div class="comment-block">
+          <div class="comment-author">
+            <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#F3E8FF,#DDD6FE);color:#7C3AED">🇮🇳</div>
+            <span class="name">Anon_Researcher_103</span>
+            <span class="date">Nov 3, 2025 · 17:40</span>
+          </div>
+          <div class="comment-body">There are many visa and housing specialists in the Consulting Q&amp;A section. You can ask detailed questions there and get professional answers.</div>
+          <div class="comment-actions">
+            <span class="ca-btn">👍 Helpful (11)</span>
+            <span class="ca-btn">↩ Reply</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Comment Input -->
+      <div class="comment-input-box">
+        <div class="avatar avatar-sm" style="background:linear-gradient(135deg,#F1F5F9,#E2E8F0);color:var(--text-mute)">?</div>
+        <textarea placeholder="Please sign in to leave a comment. An anonymous nickname will be automatically generated."></textarea>
+        <button>Post</button>
+      </div>
+    </div>
+
+    <!-- Post List -->
+    <div class="post-card">
+      <div class="post-header">
+        <div class="post-author-ava" style="background:linear-gradient(135deg,#E6F6F1,#A7E8D3)">🇨🇳</div>
+        <div style="flex:1">
+          <div class="post-meta-top">
+            <span class="badge badge-gray">General Board</span>
+            <span class="post-nickname">Anon_Researcher_099</span>
+            <span class="post-date">Nov 4, 2025 · 10:12</span>
+          </div>
+          <div class="post-title">KAIST Cafeteria Recommendations vs. Daejeon Restaurants — Let's Share!</div>
+          <div class="post-preview">It was hard to adapt to Korean food at first, but now bibimbap (비빔밥) is my all-time favorite. Any restaurant recommendations in Daejeon?</div>
+        </div>
+      </div>
+      <div class="post-footer">
+        <span class="post-stat">👍 38</span>
+        <span class="post-stat">💬 22</span>
+        <span class="post-stat">👁️ 482</span>
+        <div class="post-tags">
+          <span class="pt">Food &amp; Culture</span>
+          <span class="pt">Daejeon</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-card">
+      <div class="post-header">
+        <div class="post-author-ava" style="background:linear-gradient(135deg,#FFF3E0,#FDE68A)">🇺🇸</div>
+        <div style="flex:1">
+          <div class="post-meta-top">
+            <span class="badge badge-blue">Q&amp;A</span>
+            <span class="post-nickname">Anon_Researcher_471</span>
+            <span class="post-date">Nov 4, 2025 · 09:30</span>
+            <span class="badge badge-orange" style="background:#FFF3E0;color:#E65100">Awaiting Reply</span>
+          </div>
+          <div class="post-title">Research expense reimbursement process is incredibly confusing — need help!</div>
+          <div class="post-preview">I'm struggling with the research budget settlement via NAVER FORM or Epil. Has anyone dealt with this before?</div>
+        </div>
+      </div>
+      <div class="post-footer">
+        <span class="post-stat">👍 14</span>
+        <span class="post-stat">💬 0</span>
+        <span class="post-stat">👁️ 142</span>
+        <div class="post-tags">
+          <span class="pt">Research Life</span>
+          <span class="pt">Administration</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="post-card">
+      <div class="post-header">
+        <div class="post-author-ava" style="background:linear-gradient(135deg,#F3E8FF,#DDD6FE)">🇷🇺</div>
+        <div style="flex:1">
+          <div class="post-meta-top">
+            <span class="badge badge-gray">General Board</span>
+            <span class="post-nickname">Anon_Researcher_228</span>
+            <span class="post-date">Nov 3, 2025 · 22:48</span>
+          </div>
+          <div class="post-title">Looking for a Russian-Korean language exchange group in Seoul</div>
+          <div class="post-preview">I'd love to organize a Russian-Korean language exchange meetup. Looking for people who can meet about once a week — comment below!</div>
+        </div>
+      </div>
+      <div class="post-footer">
+        <span class="post-stat">👍 22</span>
+        <span class="post-stat">💬 14</span>
+        <span class="post-stat">👁️ 320</span>
+        <div class="post-tags">
+          <span class="pt">Groups</span>
+          <span class="pt">Seoul</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination">
+      <button class="page-btn">‹</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">›</button>
+    </div>
+  </div>
+
+  <!-- Right: Badges, Activity, FAQ -->
+  <div>
+
+    <!-- Badge Status -->
+    <div class="badge-box">
+      <h4>🏅 My Badges &amp; Activity</h4>
+      <div class="badge-list">
+        <div class="badge-item">
+          <span class="bi-icon">🌱</span>
+          <span class="bi-name">First Step</span>
+          <span class="bi-cond">Write your 1st post</span>
+        </div>
+        <div class="badge-item">
+          <span class="bi-icon">🔥</span>
+          <span class="bi-name">Active Member</span>
+          <span class="bi-cond">10+ posts written</span>
+        </div>
+        <div class="badge-item">
+          <span class="bi-icon">💬</span>
+          <span class="bi-name">Connector</span>
+          <span class="bi-cond">50+ comments</span>
+        </div>
+        <div class="badge-item">
+          <span class="bi-icon">⭐</span>
+          <span class="bi-name">Popular Author</span>
+          <span class="bi-cond">100+ likes received</span>
+        </div>
+      </div>
+      <div style="font-size:12px;color:#B45309;margin-top:10px">✅ Automatically awarded when conditions are met · Reflected in My Page</div>
+    </div>
+
+    <!-- Activity Summary -->
+    <div class="sidebar-card" style="margin-bottom:16px">
+      <div class="sidebar-card-header">
+        <h4>👤 My Activity Summary</h4>
+        <span class="section-link" style="font-size:12px">My Page →</span>
+      </div>
+      <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="text-align:center;background:var(--bg);border-radius:var(--radius-sm);padding:12px">
+          <div style="font-size:20px;font-weight:800;color:var(--primary)">8</div>
+          <div style="font-size:11px;color:var(--text-mute);margin-top:2px">Posts</div>
+        </div>
+        <div style="text-align:center;background:var(--bg);border-radius:var(--radius-sm);padding:12px">
+          <div style="font-size:20px;font-weight:800;color:var(--secondary)">34</div>
+          <div style="font-size:11px;color:var(--text-mute);margin-top:2px">Comments</div>
+        </div>
+        <div style="text-align:center;background:var(--bg);border-radius:var(--radius-sm);padding:12px">
+          <div style="font-size:20px;font-weight:800;color:#D97706">3</div>
+          <div style="font-size:11px;color:var(--text-mute);margin-top:2px">Badges Earned</div>
+        </div>
+        <div style="text-align:center;background:var(--bg);border-radius:var(--radius-sm);padding:12px">
+          <div style="font-size:20px;font-weight:800;color:#7C3AED">128</div>
+          <div style="font-size:11px;color:var(--text-mute);margin-top:2px">Likes Received</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Mini -->
+    <div class="faq-mini-box">
+      <div class="faq-mini-header">
+        <h4>❓ Frequently Asked Questions</h4>
+        <span class="section-link" style="font-size:12px">View All →</span>
+      </div>
+      <div class="faq-mini-item">
+        <div class="faq-q-txt"><span class="qm">Q.</span>Can I delete my community posts?</div>
+        <div class="faq-a-txt">Posts cannot be deleted, only edited. Use the report function for inappropriate content.</div>
+      </div>
+      <div class="faq-mini-item">
+        <div class="faq-q-txt"><span class="qm">Q.</span>How is my community nickname determined?</div>
+        <div class="faq-a-txt">A random anonymous nickname is automatically generated to protect your identity when posting.</div>
+      </div>
+      <div class="faq-mini-item">
+        <div class="faq-q-txt"><span class="qm">Q.</span>How do I earn badges?</div>
+        <div class="faq-a-txt">Badges are automatically awarded based on community activity (posts, comments, participation, etc.).</div>
+      </div>
+    </div>
+
+    <!-- 1:1 Inquiry CTA -->
+    <div style="background:#EBF4FF;border:1px solid #BDD8FF;border-radius:var(--radius-md);padding:16px;text-align:center">
+      <div style="font-size:20px;margin-bottom:6px">✉️</div>
+      <div style="font-size:13px;font-weight:700;color:var(--primary);margin-bottom:4px">Platform Inquiries</div>
+      <div style="font-size:11px;color:var(--text-mute);margin-bottom:2px">For platform-related questions only</div>
+      <div style="font-size:12px;color:var(--text-mute);margin-bottom:10px">Submit technical, account, or usage issues</div>
+      <button class="btn btn-outline btn-sm w-full" style="justify-content:center">1:1 Inquiry</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ▌Write Post Modal -->
+<div class="write-overlay" id="writeOverlay">
+  <div class="write-modal">
+    <div class="write-modal-header">
+      <h3>✏️ Write a Post</h3>
+      <span style="font-size:20px;cursor:pointer;color:var(--text-mute)" onclick="closeWrite()">✕</span>
+    </div>
+    <div class="write-modal-body">
+      <div class="wm-group">
+        <label>Board *</label>
+        <select class="wm-input">
+          <option>General Board</option>
+          <option>Q&amp;A</option>
+          <option>Groups</option>
+        </select>
+      </div>
+      <div class="wm-group">
+        <label>Category</label>
+        <select class="wm-input">
+          <option>Select a category</option>
+          <option>Settlement Stories</option>
+          <option>Research Life</option>
+          <option>Jobs &amp; Career</option>
+          <option>Food &amp; Culture</option>
+          <option>By Nationality</option>
+        </select>
+      </div>
+      <div class="wm-group">
+        <label>Title *</label>
+        <input type="text" class="wm-input" placeholder="Enter post title">
+      </div>
+      <div class="wm-group">
+        <label>Content *</label>
+        <textarea class="wm-input" placeholder="Write your post here. Your displayed name will be an automatically generated anonymous nickname."></textarea>
+      </div>
+      <div class="wm-group">
+        <label>Attach File</label>
+        <input type="file" class="wm-input" style="padding:8px">
+      </div>
+      <div style="background:#FFF8E6;border:1px solid #FDE68A;border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:#92400E">
+        ⚠️ Sign-in is required to post. Your real name will not be displayed — an anonymous nickname will be used instead.
+      </div>
+    </div>
+    <div class="write-modal-footer">
+      <button class="btn btn-ghost" onclick="closeWrite()">Cancel</button>
+      <button class="btn btn-primary">Publish Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- ▌Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">🔬 Support Platform for Foreign Research Talent</div>
+        <div>Operated by KIRD (Korea Institute of Research and Development Human Resources)</div>
+      </div>
+      <div class="footer-links">
+        <a href="#">Terms of Use</a><a href="#">Privacy Policy</a><a href="#">Contact Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">Copyright © 2026 KIRD. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+function switchComm(el) {
+  document.querySelectorAll('.comm-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function openWrite() { document.getElementById('writeOverlay').classList.add('open'); }
+function closeWrite() { document.getElementById('writeOverlay').classList.remove('open'); }
+document.getElementById('writeOverlay').addEventListener('click', function(e){
+  if(e.target===this) closeWrite();
+});
+document.querySelectorAll('.bs').forEach(b => {
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.bs').forEach(x => x.classList.remove('on'));
+    this.classList.add('on');
+  });
+});
+document.querySelectorAll('.board-chip').forEach(c => {
+  c.addEventListener('click', function(){
+    document.querySelectorAll('.board-chip').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

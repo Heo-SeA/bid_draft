@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Listings | Support Platform for Foreign Research Talent</title>
+<link rel="stylesheet" href="css/common.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Sub5 Jobs Specific ── */
+.hero-job {
+  background: linear-gradient(135deg, #1A1A2E 0%, #16213E 50%, #0F3460 100%);
+  padding: 36px 0;
+}
+.hero-job-inner { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+/* Job Search Bar */
+.job-search-wrap {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 0;
+  box-shadow: var(--shadow-sm);
+}
+.job-search-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.job-search-main {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.job-search-box {
+  flex: 1;
+  display: flex;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.job-search-box:focus-within { border-color: var(--primary); }
+.job-search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  font-size: 15px;
+  background: transparent;
+}
+.job-search-box button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.job-search-box button:hover { background: var(--primary-dark); }
+.recent-kw {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-mute);
+}
+.recent-kw span { font-weight: 600; }
+.rk-chip {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.rk-chip:hover { border-color: var(--primary); color: var(--primary); }
+.rk-chip .x { color: var(--text-mute); margin-left: 4px; }
+
+/* Filter Bar */
+.filter-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 0;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--text-sub);
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.filter-select:focus { border-color: var(--primary); }
+.filter-sort {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+}
+.sort-btn {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-mute);
+  transition: all 0.15s;
+}
+.sort-btn.on { background: var(--primary); color: #fff; border-color: var(--primary); }
+.sort-btn:hover:not(.on) { border-color: var(--primary); color: var(--primary); }
+
+/* Layout */
+.job-layout {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+}
+
+/* Results Bar */
+.result-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.result-bar .count { font-size: 15px; color: var(--text-sub); }
+.result-bar .count strong { color: var(--text-main); font-weight: 800; font-size: 18px; }
+.active-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.af-chip {
+  background: #EBF4FF;
+  color: var(--primary);
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.af-chip .rm { color: var(--primary); font-size: 11px; }
+.af-chip:hover { background: var(--primary); color: #fff; }
+
+/* Job Card */
+.job-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: all 0.18s;
+  margin-bottom: 10px;
+}
+.job-card:hover { box-shadow: var(--shadow-md); border-color: var(--primary); }
+.job-card.featured { border-color: var(--accent); }
+.job-card-top {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.job-org-logo {
+  width: 52px; height: 52px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #EBF4FF, #DBEAFE);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.job-info { flex: 1; }
+.job-org-name { font-size: 13px; color: var(--text-mute); font-weight: 500; margin-bottom: 4px; }
+.job-title { font-size: 17px; font-weight: 800; color: var(--text-main); line-height: 1.3; margin-bottom: 8px; }
+.job-badges { display: flex; flex-wrap: wrap; gap: 5px; }
+.job-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--text-mute);
+  padding-top: 12px;
+  border-top: 1px solid #F7F9FC;
+}
+.job-meta-item { display: flex; align-items: center; gap: 5px; }
+.job-actions { display: flex; gap: 8px; margin-left: auto; }
+.deadline-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.deadline-urgent { background: #FFEBE6; color: #C23B22; }
+.deadline-normal { background: #FEF9C3; color: #854D0E; }
+.deadline-safe { background: #F0FFF4; color: #065F46; }
+.bookmark-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.15s;
+  color: var(--text-mute);
+}
+.bookmark-btn:hover, .bookmark-btn.on { border-color: var(--accent); color: var(--accent); }
+.detail-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.detail-btn:hover { background: var(--primary-dark); }
+
+/* Right Sidebar */
+.reg-cta {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+.reg-cta .icon { font-size: 28px; margin-bottom: 8px; }
+.reg-cta h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.reg-cta p { font-size: 12px; opacity: 0.8; margin-bottom: 12px; }
+.reg-cta button {
+  background: #fff;
+  color: var(--primary);
+  border: none;
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Detail Slide Panel */
+.detail-panel {
+  display: none;
+  position: fixed;
+  top: 0; right: 0;
+  width: 480px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -8px 0 32px rgba(0,0,0,0.15);
+  z-index: 200;
+  flex-direction: column;
+  overflow: hidden;
+}
+.detail-panel.open { display: flex; }
+.dp-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.dp-header h3 { font-size: 18px; font-weight: 800; color: var(--text-main); line-height: 1.4; }
+.dp-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+.dp-section { margin-bottom: 18px; }
+.dp-section h5 { font-size: 12px; font-weight: 700; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+.dp-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.dp-info-item { background: var(--bg); border-radius: var(--radius-sm); padding: 10px 12px; }
+.dp-info-item .dpi-label { font-size: 11px; color: var(--text-mute); font-weight: 600; margin-bottom: 3px; }
+.dp-info-item .dpi-value { font-size: 13px; font-weight: 700; color: var(--text-main); }
+.dp-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ext-apply-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  transition: background 0.15s;
+}
+.ext-apply-btn:hover { background: var(--primary-dark); }
+.ext-warn {
+  background: #FEF3C7;
+  border: 1px solid #FDE68A;
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #92400E;
+  text-align: center;
+}
+.overlay-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 199;
+}
+.overlay-bg.open { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ▌Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-logo">
+      <span class="logo-badge">KIRD</span>
+      Support Platform for Foreign Research Talent
+    </div>
+    <nav class="site-nav">
+      <a href="main-a.html">Home</a>
+      <a href="sub1-living.html">Settlement</a>
+      <a href="sub2-consulting.html">Research &amp; Career</a>
+      <a href="sub3-education.html">Education</a>
+      <a href="#" class="active">Jobs</a>
+      <a href="sub6-community.html">Community</a>
+      <a href="#">Notices &amp; Inquiries</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch"><span class="on">EN</span><span>KO</span><span>中</span></div>
+      <div class="icon-bell">🔔</div>
+      <button class="btn-login">Sign In</button>
+      <button class="btn-signup">Sign Up</button>
+    </div>
+  </div>
+</header>
+
+<!-- ▌Hero -->
+<section class="hero-job">
+  <div class="hero-job-inner">
+    <div class="breadcrumb">
+      <a href="main-a.html">Home</a><span>›</span><span>Job Listings</span>
+    </div>
+    <h1 style="font-size:26px;font-weight:900;color:#fff;margin-bottom:8px">💼 Integrated Job Search</h1>
+    <p style="font-size:15px;color:rgba(255,255,255,0.75)">Search positions at Korean research institutes, universities, and corporations in one place</p>
+    <div style="display:flex;gap:24px;margin-top:14px">
+      <div style="color:rgba(255,255,255,0.6);font-size:13px">Active Listings <strong style="color:#fff">587</strong></div>
+      <div style="color:rgba(255,255,255,0.6);font-size:13px">New Today <strong style="color:#fff">24</strong></div>
+      <div style="color:rgba(255,255,255,0.6);font-size:13px">English Available <strong style="color:#fff">342</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ▌Search / Filter -->
+<div class="job-search-wrap">
+  <div class="job-search-inner">
+    <div class="job-search-main">
+      <div class="job-search-box">
+        <input type="text" placeholder="Search by job title, institution, or keyword">
+        <button>🔍 Search</button>
+      </div>
+    </div>
+    <div class="filter-row">
+      <select class="filter-select">
+        <option>All Job Types</option>
+        <option>Research Scientist</option>
+        <option>Postdoctoral Researcher</option>
+        <option>Industrial Engineer</option>
+        <option>Research Support</option>
+      </select>
+      <select class="filter-select">
+        <option>All Institution Types</option>
+        <option>Government-Funded Research Institute</option>
+        <option>University</option>
+        <option>Corporate R&amp;D Lab</option>
+        <option>Private Company</option>
+      </select>
+      <select class="filter-select">
+        <option>All Regions</option>
+        <option>Seoul</option>
+        <option>Gyeonggi &amp; Incheon</option>
+        <option>Daejeon &amp; Sejong</option>
+        <option>Busan &amp; Gyeongnam</option>
+        <option>Daegu &amp; Gyeongbuk</option>
+      </select>
+      <select class="filter-select">
+        <option>All Employment Types</option>
+        <option>Full-Time</option>
+        <option>Contract</option>
+        <option>Internship</option>
+      </select>
+      <select class="filter-select">
+        <option>All Language Requirements</option>
+        <option>English Available</option>
+        <option>English Required</option>
+        <option>Korean Not Required</option>
+      </select>
+      <div class="filter-sort">
+        <button class="sort-btn on">Latest</button>
+        <button class="sort-btn">Deadline Soon</button>
+        <button class="sort-btn">Recommended</button>
+      </div>
+    </div>
+    <div class="recent-kw" style="margin-top:10px">
+      <span>Recent Searches:</span>
+      <span class="rk-chip">Nanomaterials<span class="x">✕</span></span>
+      <span class="rk-chip">KIST<span class="x">✕</span></span>
+      <span class="rk-chip">Postdoctoral<span class="x">✕</span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ▌Main Layout -->
+<div class="job-layout">
+
+  <!-- Left: Job List -->
+  <div>
+    <div class="result-bar">
+      <div class="count"><strong>587</strong> job listings found</div>
+      <div class="active-filters">
+        <span class="af-chip">Research Scientist <span class="rm">✕</span></span>
+        <span class="af-chip">English Available <span class="rm">✕</span></span>
+        <span class="af-chip">Seoul <span class="rm">✕</span></span>
+      </div>
+    </div>
+
+    <!-- Job Card 1 (Urgent) -->
+    <div class="job-card" onclick="location.href='job-detail.html'">
+      <div class="job-card-top">
+        <div class="job-org-logo">🔬</div>
+        <div class="job-info">
+          <div class="job-org-name">Korea Institute of Science and Technology (KIST)</div>
+          <div class="job-title">Senior Research Scientist — Nanomaterials &amp; Energy</div>
+          <div class="job-badges">
+            <span class="badge badge-blue">Research Scientist</span>
+            <span class="badge badge-orange">Full-Time</span>
+            <span class="badge badge-green">English Available</span>
+            <span class="deadline-badge deadline-urgent">⚡ D-4</span>
+          </div>
+        </div>
+      </div>
+      <div class="job-card-meta">
+        <span class="job-meta-item">📍 Seoul, Seongbuk-gu</span>
+        <span class="job-meta-item">🎓 PhD or above</span>
+        <span class="job-meta-item">📅 Deadline: Nov 8, 2025</span>
+        <div class="job-actions">
+          <button class="bookmark-btn on" onclick="event.stopPropagation()">⭐</button>
+          <button class="detail-btn" onclick="event.stopPropagation(); location.href='job-detail.html'">View Details</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job Card 2 -->
+    <div class="job-card" onclick="openDetail('postech')">
+      <div class="job-card-top">
+        <div class="job-org-logo">🎓</div>
+        <div class="job-info">
+          <div class="job-org-name">POSTECH Department of Physics</div>
+          <div class="job-title">Postdoctoral Researcher Recruitment</div>
+          <div class="job-badges">
+            <span class="badge badge-blue">Postdoctoral Researcher</span>
+            <span class="badge badge-orange">2-Year Contract</span>
+            <span class="badge badge-green">English Required</span>
+            <span class="deadline-badge deadline-normal">D-8</span>
+          </div>
+        </div>
+      </div>
+      <div class="job-card-meta">
+        <span class="job-meta-item">📍 Pohang</span>
+        <span class="job-meta-item">🎓 PhD in Physics</span>
+        <span class="job-meta-item">📅 Deadline: Nov 14, 2025</span>
+        <div class="job-actions">
+          <button class="bookmark-btn" onclick="event.stopPropagation()">☆</button>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('postech')">View Details</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job Card 3 -->
+    <div class="job-card" onclick="openDetail('samsung')">
+      <div class="job-card-top">
+        <div class="job-org-logo">💡</div>
+        <div class="job-info">
+          <div class="job-org-name">Samsung Advanced Institute of Technology (SAIT)</div>
+          <div class="job-title">AI/ML Research Engineer (Rolling Recruitment)</div>
+          <div class="job-badges">
+            <span class="badge badge-blue">Research Scientist</span>
+            <span class="badge badge-orange">Full-Time</span>
+            <span class="badge badge-green">English Available</span>
+            <span class="deadline-badge deadline-safe">D-20</span>
+          </div>
+        </div>
+      </div>
+      <div class="job-card-meta">
+        <span class="job-meta-item">📍 Suwon / Seoul</span>
+        <span class="job-meta-item">🎓 MS or PhD</span>
+        <span class="job-meta-item">📅 Deadline: Nov 25, 2025</span>
+        <div class="job-actions">
+          <button class="bookmark-btn" onclick="event.stopPropagation()">☆</button>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('samsung')">View Details</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job Card 4 -->
+    <div class="job-card" onclick="openDetail('ibs')">
+      <div class="job-card-top">
+        <div class="job-org-logo">🧬</div>
+        <div class="job-info">
+          <div class="job-org-name">Institute for Basic Science (IBS)</div>
+          <div class="job-title">Research Scientist (Contract) — Quantum Mechanics &amp; Nanophysics</div>
+          <div class="job-badges">
+            <span class="badge badge-blue">Research Scientist</span>
+            <span class="badge badge-gray">1-Year+ Contract</span>
+            <span class="badge badge-green">English Required</span>
+            <span class="deadline-badge deadline-normal">D-16</span>
+          </div>
+        </div>
+      </div>
+      <div class="job-card-meta">
+        <span class="job-meta-item">📍 Daejeon</span>
+        <span class="job-meta-item">🎓 PhD holder</span>
+        <span class="job-meta-item">📅 Deadline: Nov 21, 2025</span>
+        <div class="job-actions">
+          <button class="bookmark-btn" onclick="event.stopPropagation()">☆</button>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('ibs')">View Details</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job Card 5 -->
+    <div class="job-card" onclick="openDetail('kaist')">
+      <div class="job-card-top">
+        <div class="job-org-logo">🏫</div>
+        <div class="job-info">
+          <div class="job-org-name">KAIST School of Electrical Engineering</div>
+          <div class="job-title">Postdoctoral Researcher — Semiconductor Devices &amp; Processes</div>
+          <div class="job-badges">
+            <span class="badge badge-blue">Postdoctoral Researcher</span>
+            <span class="badge badge-green">English Available</span>
+            <span class="deadline-badge deadline-safe">D-28</span>
+          </div>
+        </div>
+      </div>
+      <div class="job-card-meta">
+        <span class="job-meta-item">📍 Daejeon</span>
+        <span class="job-meta-item">🎓 PhD in EE / Semiconductor</span>
+        <span class="job-meta-item">📅 Deadline: Dec 3, 2025</span>
+        <div class="job-actions">
+          <button class="bookmark-btn" onclick="event.stopPropagation()">☆</button>
+          <button class="detail-btn" onclick="event.stopPropagation(); openDetail('kaist')">View Details</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination" style="margin-top:20px">
+      <button class="page-btn">‹</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">···</button>
+      <button class="page-btn">24</button>
+      <button class="page-btn">›</button>
+    </div>
+  </div>
+
+  <!-- Right Sidebar -->
+  <div>
+
+    <!-- Institution Posting CTA -->
+    <div class="reg-cta" onclick="location.href='#'">
+      <div class="icon">🏛️</div>
+      <h4>Are you an institutional recruiter?</h4>
+      <p>Post your job openings and lab information directly.<br>Published after administrator approval.</p>
+      <button>Post a Job Opening →</button>
+    </div>
+
+    <!-- Recommended Jobs -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">
+        <h4>⭐ Today's Recommended Jobs</h4>
+      </div>
+      <div>
+        <div class="job-mini" style="padding:12px 16px;border-bottom:1px solid #F7F9FC;cursor:pointer;transition:background 0.15s" onmouseover="this.style.background='#F7F9FC'" onmouseout="this.style.background=''">
+          <div style="font-size:11px;color:var(--text-mute)">KIST</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text-main);margin:3px 0">Senior Research Scientist — Nanomaterials</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <span style="font-size:11px;padding:1px 8px;background:#F1F5F9;border-radius:10px;color:var(--text-mute)">Research Scientist</span>
+            <span style="font-size:11px;padding:1px 8px;background:#F1F5F9;border-radius:10px;color:var(--text-mute)">Seoul</span>
+          </div>
+          <div style="font-size:11px;color:var(--danger);font-weight:600;margin-top:4px">Deadline D-4</div>
+        </div>
+        <div class="job-mini" style="padding:12px 16px;border-bottom:1px solid #F7F9FC;cursor:pointer;transition:background 0.15s" onmouseover="this.style.background='#F7F9FC'" onmouseout="this.style.background=''">
+          <div style="font-size:11px;color:var(--text-mute)">IBS</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text-main);margin:3px 0">Contract Researcher — Quantum Mechanics</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <span style="font-size:11px;padding:1px 8px;background:#F1F5F9;border-radius:10px;color:var(--text-mute)">Daejeon</span>
+            <span style="font-size:11px;padding:1px 8px;background:#F1F5F9;border-radius:10px;color:var(--text-mute)">English Required</span>
+          </div>
+          <div style="font-size:11px;color:#D97706;font-weight:600;margin-top:4px">Deadline D-16</div>
+        </div>
+        <div class="job-mini" style="padding:12px 16px;cursor:pointer;transition:background 0.15s" onmouseover="this.style.background='#F7F9FC'" onmouseout="this.style.background=''">
+          <div style="font-size:11px;color:var(--text-mute)">Samsung SAIT</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text-main);margin:3px 0">AI/ML Research Engineer</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap">
+            <span style="font-size:11px;padding:1px 8px;background:#F1F5F9;border-radius:10px;color:var(--text-mute)">Suwon</span>
+            <span style="font-size:11px;padding:1px 8px;background:#F1F5F9;border-radius:10px;color:var(--text-mute)">Full-Time</span>
+          </div>
+          <div style="font-size:11px;color:#059669;font-weight:600;margin-top:4px">Deadline D-20</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Training -->
+    <div class="sidebar-card">
+      <div class="sidebar-card-header">
+        <h4>📚 Job Preparation Training</h4>
+        <a href="sub3-education.html" class="section-link" style="font-size:12px">View All →</a>
+      </div>
+      <div class="sidebar-list">
+        <div class="sidebar-item">
+          <div class="sidebar-item-text">
+            <div class="title">Korean Interview Preparation for Foreign Researchers</div>
+            <div class="meta">Online · Free · Deadline D-7</div>
+          </div>
+        </div>
+        <div class="sidebar-item">
+          <div class="sidebar-item-text">
+            <div class="title">Research CV Writing Workshop (English)</div>
+            <div class="meta">Online · Free · Deadline D-15</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Consulting Link -->
+    <div style="background:#F0FFF4;border:1px solid #A7E8D3;border-radius:var(--radius-md);padding:16px;text-align:center">
+      <div style="font-size:20px;margin-bottom:6px">💬</div>
+      <div style="font-size:13px;font-weight:700;color:var(--secondary);margin-bottom:4px">Get Career Consulting</div>
+      <div style="font-size:12px;color:var(--text-mute);margin-bottom:10px">Get personalized advice on your job search from an expert</div>
+      <button class="btn btn-secondary btn-sm w-full" style="justify-content:center" onclick="location.href='sub2-consulting.html'">Request Consulting</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ▌Job Detail Panel -->
+<div class="overlay-bg" id="overlayBg" onclick="closeDetail()"></div>
+<div class="detail-panel" id="detailPanel">
+  <div class="dp-header">
+    <div>
+      <div style="font-size:12px;color:var(--text-mute);margin-bottom:4px">🔬 Korea Institute of Science and Technology (KIST)</div>
+      <h3>Senior Research Scientist — Nanomaterials &amp; Energy</h3>
+    </div>
+    <span style="font-size:20px;cursor:pointer;color:var(--text-mute)" onclick="closeDetail()">✕</span>
+  </div>
+  <div class="dp-body">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <span class="badge badge-blue">Research Scientist</span>
+      <span class="badge badge-orange">Full-Time</span>
+      <span class="badge badge-green">English Available</span>
+      <span class="deadline-badge deadline-urgent">⚡ D-4</span>
+    </div>
+    <div class="dp-section">
+      <h5>Basic Information</h5>
+      <div class="dp-info-grid">
+        <div class="dp-info-item">
+          <div class="dpi-label">Application Period</div>
+          <div class="dpi-value">~ Nov 8, 2025</div>
+        </div>
+        <div class="dp-info-item">
+          <div class="dpi-label">Employment Type</div>
+          <div class="dpi-value">Full-Time</div>
+        </div>
+        <div class="dp-info-item">
+          <div class="dpi-label">Location</div>
+          <div class="dpi-value">Seoul, Seongbuk-gu</div>
+        </div>
+        <div class="dp-info-item">
+          <div class="dpi-label">Language Requirement</div>
+          <div class="dpi-value">English Available</div>
+        </div>
+      </div>
+    </div>
+    <div class="dp-section">
+      <h5>Qualifications</h5>
+      <ul style="padding-left:16px;font-size:14px;color:var(--text-sub);line-height:1.8">
+        <li>PhD in nanomaterials, energy, or related field</li>
+        <li>3+ years of post-PhD research experience</li>
+        <li>Publications in international SCI journals</li>
+        <li>English communication ability (Korean not required)</li>
+      </ul>
+    </div>
+    <div class="dp-section">
+      <h5>Required Documents</h5>
+      <ul style="padding-left:16px;font-size:14px;color:var(--text-sub);line-height:1.8">
+        <li>CV and publication list (in English)</li>
+        <li>Research proposal (max 2 pages, A4)</li>
+        <li>2+ reference letters</li>
+        <li>Copy of doctoral diploma (notarized/apostilled)</li>
+      </ul>
+    </div>
+    <div class="dp-section">
+      <h5>Selection Process</h5>
+      <div style="display:flex;gap:4px;flex-wrap:wrap">
+        <span style="padding:4px 10px;background:#EBF4FF;color:var(--primary);border-radius:4px;font-size:12px;font-weight:600">Document Review</span>
+        <span style="font-size:12px;color:var(--text-mute)">→</span>
+        <span style="padding:4px 10px;background:#EBF4FF;color:var(--primary);border-radius:4px;font-size:12px;font-weight:600">Presentation Interview</span>
+        <span style="font-size:12px;color:var(--text-mute)">→</span>
+        <span style="padding:4px 10px;background:#EBF4FF;color:var(--primary);border-radius:4px;font-size:12px;font-weight:600">Executive Interview</span>
+        <span style="font-size:12px;color:var(--text-mute)">→</span>
+        <span style="padding:4px 10px;background:#D1FAE5;color:#065F46;border-radius:4px;font-size:12px;font-weight:600">Final Acceptance</span>
+      </div>
+    </div>
+    <div style="background:#FEF2F2;border:1px solid #FCA5A5;border-radius:var(--radius-sm);padding:12px;font-size:13px;color:#991B1B">
+      📋 Related consulting: <a href="sub2-consulting.html" style="color:var(--primary);font-weight:600">Get expert advice on document &amp; interview preparation →</a>
+    </div>
+  </div>
+  <div class="dp-footer">
+    <button class="ext-apply-btn" onclick="alert('⚠ Redirecting to external site: KIST Official Careers Page')">
+      🔗 Apply via KIST Official Careers Site
+    </button>
+    <div class="ext-warn">⚠ This will redirect you to an external site. Always verify the original announcement.</div>
+  </div>
+</div>
+
+<!-- ▌Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">🔬 Support Platform for Foreign Research Talent</div>
+        <div>Operated by KIRD (Korea Institute of Research and Development Human Resources)</div>
+      </div>
+      <div class="footer-links">
+        <a href="#">Terms of Use</a><a href="#">Privacy Policy</a><a href="#">Contact Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">Copyright © 2026 KIRD. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+function openDetail(key) {
+  document.getElementById('detailPanel').classList.add('open');
+  document.getElementById('overlayBg').classList.add('open');
+}
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('open');
+  document.getElementById('overlayBg').classList.remove('open');
+}
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', function(){
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('on'));
+    this.classList.add('on');
+  });
+});
+document.querySelectorAll('.bookmark-btn').forEach(btn => {
+  btn.addEventListener('click', function(){
+    this.classList.toggle('on');
+    this.textContent = this.classList.contains('on') ? '⭐' : '☆';
+  });
+});
+</script>
+</body>
+</html>

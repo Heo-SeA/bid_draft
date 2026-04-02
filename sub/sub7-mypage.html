@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Page Dashboard | Global Researcher Support Platform</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --surface:#ffffff;
+      --surface-2:#f8fbff;
+      --text:#16253d;
+      --muted:#66758c;
+      --line:#dbe4f0;
+      --primary:#1f5eff;
+      --primary-2:#0d3ea6;
+      --navy:#0f2240;
+      --sky:#eaf2ff;
+      --green:#0f9d77;
+      --orange:#f08c1a;
+      --red:#e25353;
+      --purple:#7a5af8;
+      --shadow:0 16px 40px rgba(15,34,64,.10);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: Inter, Pretendard, "Noto Sans KR", system-ui, -apple-system, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#f7faff 0%,#f2f6fb 100%);
+    }
+    a{text-decoration:none;color:inherit}
+    button{font:inherit;cursor:pointer}
+    .topbar{
+      position:sticky; top:0; z-index:40;
+      backdrop-filter: blur(16px);
+      background:rgba(255,255,255,.86);
+      border-bottom:1px solid rgba(219,228,240,.85);
+    }
+    .container{width:min(1400px, calc(100% - 40px)); margin:0 auto}
+    .topbar-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:18px; min-height:72px;
+    }
+    .brand{display:flex; align-items:center; gap:12px; font-weight:800; color:var(--navy)}
+    .brand-mark{
+      width:40px; height:40px; border-radius:12px;
+      background:linear-gradient(135deg,var(--primary),#49a1ff);
+      display:grid; place-items:center; color:#fff; font-weight:900;
+      box-shadow:0 10px 25px rgba(31,94,255,.28);
+    }
+    .brand-copy small{display:block; margin-top:4px; color:var(--muted); font-weight:700}
+    .gnb{display:flex; gap:8px; flex-wrap:wrap}
+    .gnb a{
+      padding:10px 14px; border-radius:999px; color:#29415f; font-size:14px; font-weight:700;
+      transition:.2s ease;
+    }
+    .gnb a:hover,.gnb a.active{background:var(--sky); color:var(--primary-2)}
+    .util{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+    .chip, .btn, .ghost, .small-btn, .icon-btn{
+      border:1px solid var(--line); background:#fff; color:var(--text);
+      border-radius:12px; transition:.2s ease;
+    }
+    .chip{padding:8px 12px; font-size:13px; color:var(--muted); font-weight:700}
+    .btn{
+      background:linear-gradient(135deg,var(--primary),#3d86ff);
+      color:#fff; border:none; padding:12px 16px; font-weight:800; box-shadow:0 10px 24px rgba(31,94,255,.25)
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .ghost{padding:11px 14px; font-weight:800}
+    .small-btn{padding:8px 10px; font-size:13px; font-weight:800}
+    .icon-btn{padding:10px 12px; font-size:13px; font-weight:800}
+    .ghost:hover,.small-btn:hover,.tab:hover,.mini-tab:hover,.filter:hover,.list-item:hover,.notif:hover,.shortcut:hover,.icon-btn:hover{border-color:#b6c7dd; transform:translateY(-1px)}
+
+    main{padding:28px 0 44px}
+    .hero{
+      background:radial-gradient(circle at top right, rgba(73,161,255,.18), transparent 28%), linear-gradient(135deg,#ffffff,#f4f8ff);
+      border:1px solid var(--line);
+      border-radius:28px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+      overflow:hidden;
+    }
+    .crumb{color:var(--muted); font-size:13px; margin-bottom:10px}
+    .hero-top{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap}
+    .headline h1{margin:0; font-size:34px; line-height:1.15; color:var(--navy)}
+    .headline p{margin:10px 0 0; color:var(--muted); max-width:780px; line-height:1.6}
+    .ko-sub{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:#eef4ff; color:#35558b; font-size:12px; font-weight:800; margin-top:12px}
+    .hero-actions{display:flex; gap:10px; flex-wrap:wrap}
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:22px;
+      align-items:start;
+      margin-top:22px;
+    }
+    .stack{display:grid; gap:22px}
+    .card{
+      background:var(--surface);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .profile-card{padding:22px}
+    .profile-top{display:flex; gap:18px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap}
+    .profile-left{display:flex; gap:16px; align-items:flex-start}
+    .avatar{
+      width:80px; height:80px; border-radius:24px;
+      background:linear-gradient(135deg,#0c3d99,#69a9ff);
+      color:#fff; display:grid; place-items:center;
+      font-size:28px; font-weight:900; box-shadow:0 14px 28px rgba(15,34,64,.22)
+    }
+    .name{font-size:25px; font-weight:900; color:var(--navy); display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .caption{font-size:12px; color:var(--muted); font-weight:800; letter-spacing:.02em; text-transform:uppercase}
+    .badge{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:800}
+    .badge.blue{background:#e9f1ff;color:#1749b3}
+    .badge.green{background:#e9fbf5;color:#0b7c5f}
+    .badge.orange{background:#fff2df;color:#b86200}
+    .badge.purple{background:#f0ebff;color:#5e43d7}
+    .badge.red{background:#ffeded;color:#c0392b}
+    .meta{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 16px; margin-top:14px}
+    .meta div{font-size:14px; color:#41536b}
+    .meta strong{display:block; color:var(--muted); font-size:12px; margin-bottom:4px; font-weight:800}
+    .progress-wrap{margin-top:18px}
+    .progress-top{display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:8px}
+    .progress{height:12px; border-radius:999px; background:#e8eef7; overflow:hidden}
+    .progress > span{display:block; height:100%; width:82%; background:linear-gradient(90deg,var(--primary),#69a9ff); border-radius:999px; position:relative}
+    .progress > span::after{content:''; position:absolute; right:0; top:0; width:28px; height:100%; background:rgba(255,255,255,.18)}
+    .profile-cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+
+    .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:22px}
+    .kpi{
+      padding:18px; border-radius:18px; border:1px solid var(--line); background:linear-gradient(180deg,#fff,#f7fbff); cursor:pointer;
+      transition:.2s ease; position:relative; overflow:hidden;
+    }
+    .kpi:hover{transform:translateY(-2px); box-shadow:0 14px 30px rgba(21,43,84,.10)}
+    .kpi .num{font-size:30px; font-weight:900; color:var(--navy); margin-top:10px}
+    .kpi .label{font-size:13px; color:var(--muted); font-weight:800}
+    .kpi .hint{font-size:12px; color:#5e78a0; margin-top:8px}
+
+    .section{padding:22px}
+    .section-header{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:18px; flex-wrap:wrap}
+    .section-title{font-size:22px; font-weight:900; color:var(--navy); margin:0}
+    .section-desc{font-size:13px; color:var(--muted); margin-top:6px; line-height:1.55}
+    .tabs,.mini-tabs,.filters{display:flex; gap:8px; flex-wrap:wrap}
+    .tab,.mini-tab,.filter{
+      padding:10px 14px; border-radius:999px; border:1px solid var(--line); background:#fff; color:#425775; font-weight:800; font-size:13px; transition:.2s ease;
+    }
+    .tab.active,.mini-tab.active,.filter.active{background:var(--sky); color:var(--primary-2); border-color:#bfd0ef}
+    .two-col{display:grid; grid-template-columns:1.18fr .82fr; gap:18px}
+    .list{display:grid; gap:12px}
+    .list-item{
+      padding:16px 16px 14px; border:1px solid var(--line); border-radius:16px; background:#fff; transition:.2s ease; cursor:pointer;
+    }
+    .list-item.active{border-color:#9fbaf0; box-shadow:0 10px 22px rgba(31,94,255,.10); background:#fbfdff}
+    .list-item-top{display:flex; justify-content:space-between; gap:12px; align-items:flex-start}
+    .item-title{font-size:15px; font-weight:900; color:var(--navy); line-height:1.4}
+    .item-meta{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; color:var(--muted); font-size:12px}
+    .item-actions{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+    .panel{
+      padding:18px; border:1px solid var(--line); border-radius:18px; background:linear-gradient(180deg,#fff,#f8fbff); min-height:100%;
+    }
+    .panel h4{margin:0 0 8px; font-size:18px; color:var(--navy)}
+    .panel .summary{color:#43546a; font-size:14px; line-height:1.65}
+    .timeline{display:grid; gap:12px; margin-top:14px}
+    .timeline-item{display:grid; grid-template-columns:18px 1fr; gap:10px; align-items:start}
+    .dot{width:12px; height:12px; border-radius:999px; background:var(--primary); margin-top:4px; box-shadow:0 0 0 4px rgba(31,94,255,.12)}
+    .dot.gray{background:#c2cfdd; box-shadow:none}
+    .muted{color:var(--muted)}
+    .notice-preview{
+      margin-top:10px; padding:14px; background:#fff; border:1px dashed #c8d5e6; border-radius:14px; color:#43546a; line-height:1.6;
+    }
+    .education-status{display:flex; align-items:center; gap:10px; margin-top:8px}
+    .status-line{height:8px; flex:1; border-radius:999px; background:#edf2f9; overflow:hidden}
+    .status-line > span{display:block; height:100%; width:64%; background:linear-gradient(90deg,#52a3ff,#1f5eff)}
+    .notif-list{display:grid; gap:10px}
+    .notif{
+      padding:14px 16px; border:1px solid var(--line); border-radius:16px; background:#fff; cursor:pointer; transition:.2s ease;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .notif.unread{background:linear-gradient(180deg,#f8fbff,#ffffff); border-color:#bbcff0}
+    .notif.active{outline:2px solid rgba(31,94,255,.16); border-color:#8eb0ee}
+    .notif small{display:block; color:var(--muted); margin-top:6px}
+    .notif-preview{margin-top:14px; padding:16px; border-radius:16px; background:var(--surface-2); border:1px solid var(--line); min-height:120px}
+    .shortcut-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:14px}
+    .shortcut{
+      padding:18px; border-radius:18px; border:1px solid var(--line); background:linear-gradient(180deg,#fff,#f8fbff); transition:.2s ease;
+    }
+    .shortcut .icon{width:42px; height:42px; border-radius:14px; display:grid; place-items:center; background:var(--sky); color:var(--primary-2); font-weight:900; margin-bottom:12px}
+    .footer{margin-top:24px; border-top:1px solid var(--line); background:#fff}
+    .footer-inner{padding:22px 0 40px; color:var(--muted); font-size:13px; line-height:1.8}
+    .divider{height:1px;background:var(--line);margin:18px 0}
+    .toast{
+      position:fixed; right:20px; bottom:20px; background:#0f2240; color:#fff; padding:14px 16px; border-radius:14px; box-shadow:0 16px 34px rgba(15,34,64,.28);
+      opacity:0; transform:translateY(8px); pointer-events:none; transition:.25s ease; z-index:60; font-size:14px;
+    }
+    .toast.show{opacity:1; transform:translateY(0)}
+
+    @media (max-width: 1180px){
+      .grid,.two-col{grid-template-columns:1fr}
+      .kpis{grid-template-columns:repeat(2,1fr)}
+      .shortcut-grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width: 760px){
+      .container{width:min(100% - 24px, 1400px)}
+      .hero{padding:20px}
+      .headline h1{font-size:28px}
+      .meta{grid-template-columns:1fr}
+      .kpis{grid-template-columns:1fr}
+      .shortcut-grid{grid-template-columns:1fr}
+      .topbar-inner{padding:10px 0}
+      .gnb{display:none}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">G</div>
+        <div class="brand-copy">
+          <div style="font-size:15px; line-height:1">Global Researcher Support Platform</div>
+          <small>Overseas Researcher Integrated Support Platform (해외연구인력 통합지원 플랫폼)</small>
+        </div>
+      </div>
+      <nav class="gnb">
+        <a href="#">Settlement Support</a>
+        <a href="#">Consulting</a>
+        <a href="#">Learning &amp; Content</a>
+        <a href="#">National R&amp;D Guide</a>
+        <a href="#">Jobs</a>
+        <a href="#">Community</a>
+        <a href="#" class="active">My Page</a>
+      </nav>
+      <div class="util">
+        <span class="chip">English ▾</span>
+        <span class="chip">한국어</span>
+        <button class="ghost action-btn" data-message="Profile editing flow preview opened.">Edit Profile</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="hero card">
+        <div class="crumb">Home &gt; My Page &gt; Dashboard</div>
+        <div class="hero-top">
+          <div class="headline">
+            <h1>My Page Dashboard</h1>
+            <p>This personal dashboard helps overseas researchers in Korea review their core information, track learning activity, monitor consulting progress, and manage notifications from one place.</p>
+            <div class="ko-sub">마이페이지 대시보드 · Personal hub for profile, learning, consulting, and alerts</div>
+          </div>
+          <div class="hero-actions">
+            <button class="ghost action-btn" data-message="Language settings preview opened.">Language Settings</button>
+            <button class="btn action-btn" data-message="Basic profile edit preview opened.">Edit Basic Profile</button>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="profile-card card" style="box-shadow:none">
+            <div class="profile-top">
+              <div class="profile-left">
+                <div class="avatar">AL</div>
+                <div>
+                  <div class="caption">Profile Summary</div>
+                  <div class="name">Alicia Lopez <span class="badge blue">Foreign Researcher</span></div>
+                  <div style="margin-top:6px; color:var(--muted); line-height:1.55">Materials Science Researcher at Korea Advanced Materials Institute<br/>현재 소속 정보와 기본 프로필을 요약해 보여주는 영역</div>
+                  <div class="meta">
+                    <div><strong>Nationality</strong> Mexico</div>
+                    <div><strong>Institution</strong> Korea Advanced Materials Institute</div>
+                    <div><strong>Research Field</strong> Advanced Materials / Energy Storage</div>
+                    <div><strong>Email</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a8c9c4c1cbc1c986c4c7d8cdd2e8dacddbcdc9dacbc086c3da">[email&#160;protected]</a></div>
+                    <div><strong>Residence Status</strong> D-8 Research Visa</div>
+                    <div><strong>Last Login</strong> 2026-04-01 09:20</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:grid; gap:8px; min-width:210px">
+                <div class="badge green">Profile Verified</div>
+                <div class="badge purple">Multilingual Service Enabled</div>
+                <div class="badge orange">2 New Alerts</div>
+              </div>
+            </div>
+
+            <div class="progress-wrap">
+              <div class="progress-top">
+                <span>Profile Completion</span>
+                <strong>82%</strong>
+              </div>
+              <div class="progress"><span></span></div>
+            </div>
+
+            <div class="profile-cta">
+              <button class="btn action-btn" data-message="Basic profile editor opened.">Edit Basic Information</button>
+              <button class="ghost action-btn" data-message="Education and career manager opened.">Manage Education &amp; Career</button>
+              <button class="ghost action-btn" data-message="Research achievements manager opened.">Manage Research Outputs</button>
+            </div>
+
+            <div class="kpis">
+              <div class="kpi" data-target="learning-section">
+                <div class="label">Learning Applications</div>
+                <div class="num">4</div>
+                <div class="hint">View requested and ongoing programs</div>
+              </div>
+              <div class="kpi" data-target="learning-section">
+                <div class="label">Certificates Ready</div>
+                <div class="num">2</div>
+                <div class="hint">Download issued certificates</div>
+              </div>
+              <div class="kpi" data-target="consulting-section">
+                <div class="label">Open Consultations</div>
+                <div class="num">3</div>
+                <div class="hint">Check answer status and follow-up</div>
+              </div>
+              <div class="kpi" data-target="alerts-section">
+                <div class="label">New Notifications</div>
+                <div class="num">5</div>
+                <div class="hint">Review notices, replies, and comments</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stack">
+            <div class="card section">
+              <div class="section-header" style="margin-bottom:14px">
+                <div>
+                  <h2 class="section-title" style="font-size:18px">Quick Actions</h2>
+                  <div class="section-desc">Frequently used tasks for profile, learning, consulting, and alerts.</div>
+                </div>
+              </div>
+              <div class="shortcut-grid" style="grid-template-columns:repeat(2,1fr)">
+                <div class="shortcut action-btn" data-message="Certificate library preview opened.">
+                  <div class="icon">DL</div>
+                  <strong>Download Certificates</strong>
+                  <div class="section-desc">Access completed program certificates.</div>
+                </div>
+                <div class="shortcut action-btn" data-message="Consultation inbox preview opened.">
+                  <div class="icon">Q&amp;A</div>
+                  <strong>Check Consulting Replies</strong>
+                  <div class="section-desc">Review answered and pending consultations.</div>
+                </div>
+                <div class="shortcut action-btn" data-message="Notification center preview opened.">
+                  <div class="icon">NT</div>
+                  <strong>Open Notification Center</strong>
+                  <div class="section-desc">See announcements, comments, and reminders.</div>
+                </div>
+                <div class="shortcut action-btn" data-message="Profile settings preview opened.">
+                  <div class="icon">PF</div>
+                  <strong>Update Profile</strong>
+                  <div class="section-desc">Maintain personal and institutional details.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card section">
+              <div class="section-header" style="margin-bottom:12px">
+                <div>
+                  <h2 class="section-title" style="font-size:18px">Account Snapshot</h2>
+                  <div class="section-desc">A compact overview of current user status.</div>
+                </div>
+              </div>
+              <div class="notice-preview">
+                <strong>Current Focus</strong><br/>
+                Your profile is nearly complete, one consultation is waiting for an expert answer, and two completed learning programs are ready for certificate download.
+              </div>
+              <div class="divider"></div>
+              <div style="display:grid; gap:10px; color:#43546a; font-size:14px">
+                <div><strong>Profile Update Needed:</strong> Add ORCID and emergency contact</div>
+                <div><strong>Learning Status:</strong> 1 application under review / 1 program in progress / 2 completed</div>
+                <div><strong>Consulting Status:</strong> 1 answered / 1 pending / 1 follow-up received</div>
+                <div><strong>Notification Status:</strong> 2 unread notices / 2 comment updates / 1 consultation reply</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card section" id="learning-section" style="margin-bottom:22px">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Learning History</h2>
+            <div class="section-desc">Track education applications, participation status, and certificate downloads. <span class="muted">교육 이력 관리</span></div>
+          </div>
+          <div class="tabs" data-tab-group="learning">
+            <button class="tab active" data-filter="all">All</button>
+            <button class="tab" data-filter="applied">Applied</button>
+            <button class="tab" data-filter="inprogress">In Progress</button>
+            <button class="tab" data-filter="completed">Completed</button>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="list" id="learning-list">
+            <div class="list-item active" data-category="completed" data-panel="learning-1">
+              <div class="list-item-top">
+                <div>
+                  <div class="item-title">Research Ethics in Korea</div>
+                  <div class="item-meta">
+                    <span>KIRD</span><span>2026.02.10 - 2026.02.28</span><span>Completed</span>
+                  </div>
+                </div>
+                <span class="badge green">Certificate Ready</span>
+              </div>
+              <div class="education-status">
+                <div class="status-line"><span style="width:100%"></span></div>
+                <strong>100%</strong>
+              </div>
+              <div class="item-actions">
+                <button class="small-btn action-btn" data-message="Certificate download preview opened.">Download Certificate</button>
+              </div>
+            </div>
+
+            <div class="list-item" data-category="inprogress" data-panel="learning-2">
+              <div class="list-item-top">
+                <div>
+                  <div class="item-title">Korean Research Administration Essentials</div>
+                  <div class="item-meta">
+                    <span>National R&amp;D Academy</span><span>2026.03.20 - 2026.04.18</span><span>In Progress</span>
+                  </div>
+                </div>
+                <span class="badge blue">Ongoing</span>
+              </div>
+              <div class="education-status">
+                <div class="status-line"><span style="width:64%"></span></div>
+                <strong>64%</strong>
+              </div>
+            </div>
+
+            <div class="list-item" data-category="applied" data-panel="learning-3">
+              <div class="list-item-top">
+                <div>
+                  <div class="item-title">Science Communication for Global Researchers</div>
+                  <div class="item-meta">
+                    <span>Online Live Session</span><span>Starts 2026.04.12</span><span>Applied</span>
+                  </div>
+                </div>
+                <span class="badge orange">Pending Review</span>
+              </div>
+              <div class="item-actions">
+                <button class="small-btn action-btn" data-message="Application detail preview opened.">View Application</button>
+              </div>
+            </div>
+
+            <div class="list-item" data-category="completed" data-panel="learning-4">
+              <div class="list-item-top">
+                <div>
+                  <div class="item-title">Lab Safety Orientation for Newcomers</div>
+                  <div class="item-meta">
+                    <span>Institution Program</span><span>2026.01.15</span><span>Completed</span>
+                  </div>
+                </div>
+                <span class="badge green">Certificate Ready</span>
+              </div>
+              <div class="education-status">
+                <div class="status-line"><span style="width:100%"></span></div>
+                <strong>100%</strong>
+              </div>
+              <div class="item-actions">
+                <button class="small-btn action-btn" data-message="Certificate download preview opened.">Download Certificate</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" id="learning-detail">
+            <div class="caption">Learning Detail</div>
+            <div id="learning-panel-content">
+              <h4>Research Ethics in Korea</h4>
+              <div class="summary">This completed program helps foreign researchers understand research integrity standards, publication ethics, and institutional compliance practices required in Korea.</div>
+              <div class="timeline">
+                <div class="timeline-item"><div class="dot"></div><div><strong>Application Approved</strong><br/><span class="muted">2026.02.03 · Seat confirmed</span></div></div>
+                <div class="timeline-item"><div class="dot"></div><div><strong>Program Completed</strong><br/><span class="muted">2026.02.28 · Attendance and assessment completed</span></div></div>
+                <div class="timeline-item"><div class="dot"></div><div><strong>Certificate Issued</strong><br/><span class="muted">PDF certificate available for download</span></div></div>
+              </div>
+              <div class="notice-preview">
+                <strong>Available Actions</strong><br/>Download certificate, review program materials, and revisit course notice.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card section" id="consulting-section" style="margin-bottom:22px">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Consulting History</h2>
+            <div class="section-desc">Review consultation topics, answer status, assigned experts, and follow-up activity. <span class="muted">컨설팅 내역 조회</span></div>
+          </div>
+          <div class="tabs" data-tab-group="consulting">
+            <button class="tab active" data-filter="all">All</button>
+            <button class="tab" data-filter="settlement">Settlement Support</button>
+            <button class="tab" data-filter="career">Career &amp; Employment</button>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="list" id="consulting-list">
+            <div class="list-item active" data-category="settlement" data-panel="consulting-1">
+              <div class="list-item-top">
+                <div>
+                  <div class="item-title">How can I extend my residence documents after changing institutions?</div>
+                  <div class="item-meta">
+                    <span>Private Consultation</span><span>Submitted 2026.03.28</span><span>Settlement Support</span>
+                  </div>
+                </div>
+                <span class="badge orange">Waiting for Answer</span>
+              </div>
+              <div class="item-actions">
+                <span class="badge purple">Assigned Expert: Immigration Advisor</span>
+              </div>
+            </div>
+
+            <div class="list-item" data-category="career" data-panel="consulting-2">
+              <div class="list-item-top">
+                <div>
+                  <div class="item-title">What should I prepare for a government-funded lab recruitment interview?</div>
+                  <div class="item-meta">
+                    <span>Public Q&amp;A</span><span>Updated 2026.03.24</span><span>Career &amp; Employment</span>
+                  </div>
+                </div>
+                <span class="badge green">Answered</span>
+              </div>
+              <div class="item-actions">
+                <span class="badge blue">Assigned Expert: HR Mentor</span>
+              </div>
+            </div>
+
+            <div class="list-item" data-category="career" data-panel="consulting-3">
+              <div class="list-item-top">
+                <div>
+                  <div class="item-title">Can you review my research CV for Korean university positions?</div>
+                  <div class="item-meta">
+                    <span>Private Consultation</span><span>Updated 2026.03.18</span><span>Career &amp; Employment</span>
+                  </div>
+                </div>
+                <span class="badge blue">Follow-up Received</span>
+              </div>
+              <div class="item-actions">
+                <span class="badge purple">Assigned Expert: Career Consultant</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" id="consulting-detail">
+            <div class="caption">Consulting Detail</div>
+            <div id="consulting-panel-content">
+              <h4>Residence Document Extension After Institutional Transfer</h4>
+              <div class="summary">This consultation asks about residence documentation when moving between Korean research institutions. The case is currently waiting for a specialist response.</div>
+              <div class="timeline">
+                <div class="timeline-item"><div class="dot"></div><div><strong>Question Submitted</strong><br/><span class="muted">2026.03.28 · User requested a private consultation</span></div></div>
+                <div class="timeline-item"><div class="dot"></div><div><strong>Expert Assigned</strong><br/><span class="muted">Immigration support advisor assigned on the same day</span></div></div>
+                <div class="timeline-item"><div class="dot gray"></div><div><strong>Answer Pending</strong><br/><span class="muted">Expected response within 2 business days</span></div></div>
+              </div>
+              <div class="notice-preview">
+                <strong>Next Action</strong><br/>Add supporting details such as visa type, transfer date, and sponsoring institution if needed.
+              </div>
+              <div class="item-actions" style="margin-top:12px">
+                <button class="small-btn action-btn" data-message="Follow-up question form opened.">Add Follow-up Question</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card section" id="alerts-section" style="margin-bottom:22px">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Notifications</h2>
+            <div class="section-desc">Manage platform notices, consultation updates, comment activity, and system alerts. <span class="muted">알림 관리</span></div>
+          </div>
+          <div class="tabs" data-tab-group="alerts">
+            <button class="tab active" data-filter="all">All</button>
+            <button class="tab" data-filter="notice">Announcements</button>
+            <button class="tab" data-filter="consulting">Consulting</button>
+            <button class="tab" data-filter="comment">Comments</button>
+            <button class="tab" data-filter="system">System</button>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="notif-list" id="alerts-list">
+            <div class="notif unread active" data-category="consulting" data-panel="alert-1">
+              <div>
+                <strong>New answer received for your visa extension consultation</strong>
+                <small>Consulting · 10 minutes ago</small>
+              </div>
+              <span class="badge blue">New</span>
+            </div>
+            <div class="notif unread" data-category="notice" data-panel="alert-2">
+              <div>
+                <strong>Application open: Spring research administration workshop</strong>
+                <small>Announcement · Today</small>
+              </div>
+              <span class="badge orange">Notice</span>
+            </div>
+            <div class="notif" data-category="comment" data-panel="alert-3">
+              <div>
+                <strong>A new comment was posted on your community discussion</strong>
+                <small>Comment · Yesterday</small>
+              </div>
+              <span class="badge purple">Comment</span>
+            </div>
+            <div class="notif" data-category="system" data-panel="alert-4">
+              <div>
+                <strong>Your profile verification is complete</strong>
+                <small>System · 2 days ago</small>
+              </div>
+              <span class="badge green">Done</span>
+            </div>
+            <div class="notif unread" data-category="notice" data-panel="alert-5">
+              <div>
+                <strong>Updated guide: National R&amp;D participation process</strong>
+                <small>Announcement · 3 days ago</small>
+              </div>
+              <span class="badge orange">Update</span>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="caption">Notification Detail</div>
+            <div id="alerts-panel-content">
+              <h4>New answer received for your visa extension consultation</h4>
+              <div class="summary">An assigned advisor has posted a response to your private consultation about residence document extension after changing institutions.</div>
+              <div class="notif-preview">
+                <strong>Preview</strong><br/>
+                “Please prepare your transfer certificate, passport copy, alien registration card, and proof of new institutional affiliation before visiting the immigration office...”
+              </div>
+              <div class="item-actions" style="margin-top:12px">
+                <button class="small-btn action-btn" data-message="Linked consultation detail opened.">Open Related Consultation</button>
+                <button class="small-btn action-btn" data-message="Notification marked as read.">Mark as Read</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Connected Services</h2>
+            <div class="section-desc">Direct access to the major services most frequently connected to My Page.</div>
+          </div>
+        </div>
+        <div class="shortcut-grid">
+          <div class="shortcut action-btn" data-message="Settlement support hub preview opened.">
+            <div class="icon">SS</div>
+            <strong>Settlement Support</strong>
+            <div class="section-desc">Open practical guides for visa, housing, healthcare, and daily life.</div>
+          </div>
+          <div class="shortcut action-btn" data-message="Learning and content hub preview opened.">
+            <div class="icon">LC</div>
+            <strong>Learning &amp; Content</strong>
+            <div class="section-desc">Browse educational programs and growth-oriented resources.</div>
+          </div>
+          <div class="shortcut action-btn" data-message="Consulting hub preview opened.">
+            <div class="icon">CS</div>
+            <strong>Consulting</strong>
+            <div class="section-desc">Create or manage settlement and career consultations.</div>
+          </div>
+          <div class="shortcut action-btn" data-message="Community preview opened.">
+            <div class="icon">CM</div>
+            <strong>Community</strong>
+            <div class="section-desc">Move from dashboard status to discussion and peer interaction.</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <strong>Global Researcher Support Platform</strong><br/>
+      Personalized dashboard prototype for overseas researchers in Korea. Primary labels are provided in English, with selective Korean support where local context may help platform operators and proposal reviewers understand the function intent.
+      <div class="divider"></div>
+      Address · Daejeon, Republic of Korea &nbsp; | &nbsp; Contact · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="34474144445b464074514c55594458511a5f46">[email&#160;protected]</a> &nbsp; | &nbsp; Language · English / 한국어
+    </div>
+  </footer>
+
+  <div class="toast" id="toast">Action preview opened.</div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    const learningPanels = {
+      'learning-1': `
+        <h4>Research Ethics in Korea</h4>
+        <div class="summary">This completed program helps foreign researchers understand research integrity standards, publication ethics, and institutional compliance practices required in Korea.</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="dot"></div><div><strong>Application Approved</strong><br/><span class="muted">2026.02.03 · Seat confirmed</span></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Program Completed</strong><br/><span class="muted">2026.02.28 · Attendance and assessment completed</span></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Certificate Issued</strong><br/><span class="muted">PDF certificate available for download</span></div></div>
+        </div>
+        <div class="notice-preview"><strong>Available Actions</strong><br/>Download certificate, review program materials, and revisit the course notice.</div>
+      `,
+      'learning-2': `
+        <h4>Korean Research Administration Essentials</h4>
+        <div class="summary">An ongoing learning course focused on proposal administration, documentation flow, and project compliance in Korean R&amp;D environments.</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="dot"></div><div><strong>Application Approved</strong><br/><span class="muted">2026.03.12 · Registration confirmed</span></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Course in Progress</strong><br/><span class="muted">64% completed · Weekly assignments submitted</span></div></div>
+          <div class="timeline-item"><div class="dot gray"></div><div><strong>Certificate Pending</strong><br/><span class="muted">Issued after final attendance check</span></div></div>
+        </div>
+        <div class="notice-preview"><strong>Available Actions</strong><br/>Resume learning, open materials, and check the remaining schedule.</div>
+      `,
+      'learning-3': `
+        <h4>Science Communication for Global Researchers</h4>
+        <div class="summary">This upcoming program supports global researchers in presenting research to Korean institutions, media channels, and industry stakeholders.</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="dot"></div><div><strong>Application Submitted</strong><br/><span class="muted">2026.03.30 · Waiting for confirmation</span></div></div>
+          <div class="timeline-item"><div class="dot gray"></div><div><strong>Review in Progress</strong><br/><span class="muted">Program manager will notify selection results</span></div></div>
+        </div>
+        <div class="notice-preview"><strong>Available Actions</strong><br/>Check application detail, edit supporting documents, or cancel before approval.</div>
+      `,
+      'learning-4': `
+        <h4>Lab Safety Orientation for Newcomers</h4>
+        <div class="summary">A mandatory onboarding course introducing safety procedures, lab access rules, and emergency reporting methods for newly arrived researchers.</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="dot"></div><div><strong>Orientation Registered</strong><br/><span class="muted">2026.01.10 · Institution-required program</span></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Orientation Completed</strong><br/><span class="muted">2026.01.15 · Attendance verified</span></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Certificate Issued</strong><br/><span class="muted">Immediate download available</span></div></div>
+        </div>
+        <div class="notice-preview"><strong>Available Actions</strong><br/>Download certificate and review lab safety handbook.</div>
+      `
+    };
+
+    const consultingPanels = {
+      'consulting-1': `
+        <h4>Residence Document Extension After Institutional Transfer</h4>
+        <div class="summary">This consultation asks about residence documentation when moving between Korean research institutions. The case is currently waiting for a specialist response.</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="dot"></div><div><strong>Question Submitted</strong><br/><span class="muted">2026.03.28 · User requested a private consultation</span></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Expert Assigned</strong><br/><span class="muted">Immigration support advisor assigned on the same day</span></div></div>
+          <div class="timeline-item"><div class="dot gray"></div><div><strong>Answer Pending</strong><br/><span class="muted">Expected response within 2 business days</span></div></div>
+        </div>
+        <div class="notice-preview"><strong>Next Action</strong><br/>Add supporting details such as visa type, transfer date, and sponsoring institution if needed.</div>
+        <div class="item-actions" style="margin-top:12px"><button class="small-btn action-btn" data-message="Follow-up question form opened.">Add Follow-up Question</button></div>
+      `,
+      'consulting-2': `
+        <h4>Interview Preparation for Government-Funded Lab Recruitment</h4>
+        <div class="summary">This career consultation includes recruiter expectations, presentation tips, and common interview themes for publicly funded research organizations in Korea.</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="dot"></div><div><strong>Question Submitted</strong><br/><span class="muted">2026.03.19 · Public Q&amp;A created</span></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Expert Answer Posted</strong><br/><span class="muted">2026.03.24 · HR mentor response available</span></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>User Viewed Answer</strong><br/><span class="muted">Saved as a reference item</span></div></div>
+        </div>
+        <div class="notice-preview"><strong>Next Action</strong><br/>Review the answer, bookmark the Q&amp;A, or ask a follow-up question.</div>
+      `,
+      'consulting-3': `
+        <h4>Research CV Review for Korean University Positions</h4>
+        <div class="summary">This private consultation focuses on localizing a research CV for Korean academic hiring expectations, including document order and publication highlighting.</div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="dot"></div><div><strong>Question Submitted</strong><br/><span class="muted">2026.03.14 · Draft CV attached</span></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Initial Expert Review</strong><br/><span class="muted">Career consultant provided first feedback</span></div></div>
+          <div class="timeline-item"><div class="dot"></div><div><strong>Follow-up Received</strong><br/><span class="muted">Revised CV uploaded for additional comments</span></div></div>
+        </div>
+        <div class="notice-preview"><strong>Next Action</strong><br/>Open the latest feedback and upload the next revision if needed.</div>
+      `
+    };
+
+    const alertPanels = {
+      'alert-1': `
+        <h4>New answer received for your visa extension consultation</h4>
+        <div class="summary">An assigned advisor has posted a response to your private consultation about residence document extension after changing institutions.</div>
+        <div class="notif-preview"><strong>Preview</strong><br/>“Please prepare your transfer certificate, passport copy, alien registration card, and proof of new institutional affiliation before visiting the immigration office...”</div>
+        <div class="item-actions" style="margin-top:12px"><button class="small-btn action-btn" data-message="Linked consultation detail opened.">Open Related Consultation</button><button class="small-btn action-btn" data-message="Notification marked as read.">Mark as Read</button></div>
+      `,
+      'alert-2': `
+        <h4>Application open: Spring research administration workshop</h4>
+        <div class="summary">A new learning program is now open for application. The workshop introduces administrative processes frequently encountered by foreign researchers in Korea.</div>
+        <div class="notif-preview"><strong>Why it matters</strong><br/>This notice is relevant to ongoing user learning history and may help users improve practical adaptation to Korean R&amp;D systems.</div>
+        <div class="item-actions" style="margin-top:12px"><button class="small-btn action-btn" data-message="Program detail opened.">Open Program Detail</button></div>
+      `,
+      'alert-3': `
+        <h4>A new comment was posted on your community discussion</h4>
+        <div class="summary">Another user replied to your community post about international researcher onboarding experiences and local support resources.</div>
+        <div class="notif-preview"><strong>Preview</strong><br/>“I had a similar case, and my institution helped by sharing an English checklist for housing registration...”</div>
+        <div class="item-actions" style="margin-top:12px"><button class="small-btn action-btn" data-message="Community post opened.">Open Community Thread</button></div>
+      `,
+      'alert-4': `
+        <h4>Your profile verification is complete</h4>
+        <div class="summary">The platform has verified your current affiliation and core profile information. You can now use institution-linked services with fewer restrictions.</div>
+        <div class="notif-preview"><strong>Status</strong><br/>Verified profile status enables more trusted interactions across consulting and learning services.</div>
+      `,
+      'alert-5': `
+        <h4>Updated guide: National R&amp;D participation process</h4>
+        <div class="summary">The participation guide has been revised with updated steps for proposal preparation, document review, and submission references for foreign researchers.</div>
+        <div class="notif-preview"><strong>Recommended Action</strong><br/>Review the updated procedure before joining a new project or institutional proposal.</div>
+        <div class="item-actions" style="margin-top:12px"><button class="small-btn action-btn" data-message="National R&D guide opened.">Open Guide</button></div>
+      `
+    };
+
+    function showToast(message){
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(()=>toast.classList.remove('show'), 1800);
+    }
+
+    document.querySelectorAll('.action-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>showToast(btn.dataset.message || 'Action preview opened.'));
+    });
+
+    document.querySelectorAll('.kpi').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        const target = document.getElementById(card.dataset.target);
+        if(target){ target.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+
+    function setupListSelection(listSelector, panelSelector, panelMap){
+      document.querySelectorAll(listSelector + ' .list-item, ' + listSelector + ' .notif').forEach(item=>{
+        item.addEventListener('click', ()=>{
+          const siblings = item.parentElement.querySelectorAll('.list-item, .notif');
+          siblings.forEach(s=>s.classList.remove('active'));
+          item.classList.add('active');
+          const panelId = item.dataset.panel;
+          const panel = document.querySelector(panelSelector);
+          panel.innerHTML = panelMap[panelId] || '';
+          panel.querySelectorAll('.action-btn').forEach(btn=>{
+            btn.addEventListener('click', ()=>showToast(btn.dataset.message || 'Action preview opened.'));
+          });
+        });
+      });
+    }
+
+    function setupFilter(tabGroupName, targetSelector){
+      const groups = document.querySelectorAll(`[data-tab-group="${tabGroupName}"] .tab`);
+      groups.forEach(tab=>{
+        tab.addEventListener('click', ()=>{
+          groups.forEach(t=>t.classList.remove('active'));
+          tab.classList.add('active');
+          const filter = tab.dataset.filter;
+          document.querySelectorAll(targetSelector).forEach(item=>{
+            if(filter === 'all' || item.dataset.category === filter){
+              item.style.display = '';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+          const visible = Array.from(document.querySelectorAll(targetSelector)).find(el => el.style.display !== 'none');
+          if(visible){ visible.click(); }
+        });
+      });
+    }
+
+    setupListSelection('#learning-list', '#learning-panel-content', learningPanels);
+    setupListSelection('#consulting-list', '#consulting-panel-content', consultingPanels);
+    setupListSelection('#alerts-list', '#alerts-panel-content', alertPanels);
+
+    setupFilter('learning', '#learning-list .list-item');
+    setupFilter('consulting', '#consulting-list .list-item');
+    setupFilter('alerts', '#alerts-list .notif');
+  </script>
+</body>
+</html>

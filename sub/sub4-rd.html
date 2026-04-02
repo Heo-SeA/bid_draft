@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>National R&D Participation Guide | Support Platform for Foreign Research Talent</title>
+<link rel="stylesheet" href="css/common.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Sub4 R&D Specific ── */
+.hero-rd {
+  background: linear-gradient(135deg, #05245A 0%, #0F3272 50%, #1A4FA0 100%);
+  padding: 36px 0;
+}
+.hero-rd-inner { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+/* 5-Step Procedure */
+.step-section {
+  background: #fff;
+  padding: 48px 0;
+  border-bottom: 1px solid var(--border);
+}
+.step-section-inner {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.step-section-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.step-section-title h2 {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+.step-section-title p { font-size: 15px; color: var(--text-mute); }
+
+.steps-row {
+  display: flex;
+  gap: 0;
+  position: relative;
+  margin-bottom: 24px;
+}
+.steps-row::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  z-index: 0;
+}
+.step-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+}
+.step-circle {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 16px;
+  border: 3px solid #fff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  transition: all 0.2s;
+  position: relative;
+}
+.step-block:hover .step-circle { transform: scale(1.1); }
+.step-num {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+}
+.s1 .step-circle { background: linear-gradient(135deg, #1A4FA0, #2D6ED4); }
+.s2 .step-circle { background: linear-gradient(135deg, #0D7A55, #00A878); }
+.s3 .step-circle { background: linear-gradient(135deg, #7C3AED, #A78BFA); }
+.s4 .step-circle { background: linear-gradient(135deg, #D97706, #F59E0B); }
+.s5 .step-circle { background: linear-gradient(135deg, #DC2626, #F87171); }
+
+.step-block.active .step-circle { transform: scale(1.15); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.step-name { font-size: 15px; font-weight: 800; color: var(--text-main); text-align: center; margin-bottom: 5px; }
+.step-sub { font-size: 12px; color: var(--text-mute); text-align: center; line-height: 1.4; }
+
+/* Step Detail Card */
+.step-detail {
+  background: var(--bg);
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all 0.2s;
+}
+.step-detail-header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #fff;
+}
+.step-detail-header .icon { font-size: 24px; }
+.step-detail-header h4 { font-size: 18px; font-weight: 800; }
+.step-detail-header p { font-size: 13px; opacity: 0.8; margin-top: 2px; }
+.step-detail-body {
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.step-detail-items {}
+.step-detail-items h5 {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-sub);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 13px;
+  color: var(--text-sub);
+  line-height: 1.5;
+}
+.step-item:last-child { border-bottom: none; }
+.step-item .icon { font-size: 16px; flex-shrink: 0; }
+.step-docs h5 { font-size: 13px; font-weight: 700; color: var(--text-sub); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+.doc-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 8px;
+}
+.doc-link:hover { border-color: var(--primary); background: #EBF4FF; }
+.doc-link .doc-icon { font-size: 18px; }
+.doc-link .doc-text { flex: 1; }
+.doc-link .doc-name { font-size: 13px; font-weight: 600; color: var(--text-main); }
+.doc-link .doc-type { font-size: 11px; color: var(--text-mute); margin-top: 1px; }
+.doc-link .doc-action { font-size: 12px; color: var(--primary); font-weight: 600; white-space: nowrap; }
+
+/* External Links Section */
+.link-section {
+  background: var(--bg);
+  padding: 40px 0;
+  border-bottom: 1px solid var(--border);
+}
+.link-section-inner { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+.link-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.ext-link-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: center;
+}
+.ext-link-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.ext-link-card .logo { font-size: 28px; margin-bottom: 10px; }
+.ext-link-card h5 { font-size: 15px; font-weight: 700; color: var(--text-main); margin-bottom: 5px; }
+.ext-link-card p { font-size: 12px; color: var(--text-mute); line-height: 1.5; margin-bottom: 12px; }
+.ext-link-card .ext-btn {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.ext-link-card .ext-btn:hover { background: var(--primary); color: #fff; }
+
+/* Latest Announcements */
+.announce-section { max-width: 1240px; margin: 0 auto; padding: 40px 24px; }
+.announce-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.announce-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+.announce-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); }
+.announce-card-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.announce-agency {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #EBF4FF, #BDD8FF);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.announce-info {}
+.announce-title { font-size: 15px; font-weight: 700; color: var(--text-main); line-height: 1.4; margin-bottom: 4px; }
+.announce-org { font-size: 12px; color: var(--text-mute); }
+.announce-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-mute);
+  flex-wrap: wrap;
+}
+.warn-txt {
+  font-size: 11px;
+  color: #B45309;
+  background: #FEF3C7;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Step Popup */
+.step-popup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+.step-popup.open { display: flex; }
+.step-popup-box {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  width: 520px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+.step-popup-header {
+  padding: 22px 24px;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.step-popup-body { padding: 22px 24px; }
+.step-popup-body h5 { font-size: 14px; font-weight: 700; color: var(--text-sub); margin-bottom: 8px; }
+.step-popup-body ul { padding-left: 18px; }
+.step-popup-body li { font-size: 14px; color: var(--text-sub); line-height: 1.8; }
+.step-popup-footer {
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+</style>
+</head>
+<body>
+
+<!-- ▌Header -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="site-logo">
+      <span class="logo-badge">KIRD</span>
+      Support Platform for Foreign Research Talent
+    </div>
+    <nav class="site-nav">
+      <a href="main-a.html">Home</a>
+      <a href="sub1-living.html">Settlement</a>
+      <a href="sub2-consulting.html" class="active">Research &amp; Career</a>
+      <a href="sub3-education.html">Education</a>
+      <a href="sub5-jobs.html">Jobs</a>
+      <a href="sub6-community.html">Community</a>
+      <a href="#">Notices &amp; Inquiries</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switch"><span class="on">EN</span><span>KO</span><span>中</span></div>
+      <div class="icon-bell">🔔</div>
+      <button class="btn-login">Sign In</button>
+      <button class="btn-signup">Sign Up</button>
+    </div>
+  </div>
+</header>
+
+<!-- ▌Hero -->
+<section class="hero-rd">
+  <div class="hero-rd-inner">
+    <div class="breadcrumb">
+      <a href="main-a.html">Home</a><span>›</span><span>Research &amp; Career</span><span>›</span><span>National R&amp;D Guide</span>
+    </div>
+    <h1 style="font-size:26px;font-weight:900;color:#fff;margin-bottom:8px">🔬 National R&amp;D Information &amp; Participation Guide</h1>
+    <p style="font-size:15px;color:rgba(255,255,255,0.8);margin-bottom:16px">A comprehensive guide for foreign researchers on how to participate in Korea's national R&amp;D programs, with links to external funding announcements.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-ghost" style="background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25);color:#fff" onclick="openPopup('s1')">Start with Eligibility Check</button>
+      <button class="btn btn-ghost" style="background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25);color:#fff">Browse Funding Announcements</button>
+    </div>
+  </div>
+</section>
+
+<!-- ▌5-Step Participation Process -->
+<section class="step-section">
+  <div class="step-section-inner">
+    <div class="step-section-title">
+      <h2>🗂️ 5-Step National R&amp;D Participation Process</h2>
+      <p>Click each step to view details, required documents, and important notes</p>
+    </div>
+
+    <div class="steps-row">
+      <div class="step-block s1 active" onclick="selectStep(this,'s1')">
+        <div class="step-circle">🔎<div class="step-num">1</div></div>
+        <div class="step-name">Eligibility Check</div>
+        <div class="step-sub">Verify participation<br>eligibility &amp; visa status</div>
+      </div>
+      <div class="step-block s2" onclick="selectStep(this,'s2')">
+        <div class="step-circle">📋<div class="step-num">2</div></div>
+        <div class="step-name">Find Opportunities</div>
+        <div class="step-sub">NTIS, ZEUS &amp;<br>other portals</div>
+      </div>
+      <div class="step-block s3" onclick="selectStep(this,'s3')">
+        <div class="step-circle">📝<div class="step-num">3</div></div>
+        <div class="step-name">Application Prep</div>
+        <div class="step-sub">Prepare documents<br>&amp; research proposal</div>
+      </div>
+      <div class="step-block s4" onclick="selectStep(this,'s4')">
+        <div class="step-circle">🚀<div class="step-num">4</div></div>
+        <div class="step-name">Project Execution</div>
+        <div class="step-sub">Conduct research<br>&amp; interim reports</div>
+      </div>
+      <div class="step-block s5" onclick="selectStep(this,'s5')">
+        <div class="step-circle">✅<div class="step-num">5</div></div>
+        <div class="step-name">Completion &amp; Follow-up</div>
+        <div class="step-sub">Final report &amp;<br>outcome management</div>
+      </div>
+    </div>
+
+    <!-- Step Detail Card (default: Step 1) -->
+    <div class="step-detail" id="stepDetail">
+      <div class="step-detail-header">
+        <div class="icon">🔎</div>
+        <div>
+          <h4>Step 1. Eligibility Check</h4>
+          <p>Verify whether you are eligible to participate in national R&amp;D projects and confirm your visa status requirements</p>
+        </div>
+      </div>
+      <div class="step-detail-body">
+        <div class="step-detail-items">
+          <h5>Key Checkpoints</h5>
+          <div class="step-item">
+            <span class="icon">🛂</span>
+            <span>Visa status: Confirm you hold a research-eligible visa (E-3 Research, F-2 Residence, F-5 Permanent Residency, etc.)</span>
+          </div>
+          <div class="step-item">
+            <span class="icon">🏛️</span>
+            <span>Verify that your affiliated institution qualifies as an eligible R&amp;D participant (universities, research institutes, corporate R&amp;D labs)</span>
+          </div>
+          <div class="step-item">
+            <span class="icon">📋</span>
+            <span>Check whether foreign researchers are restricted from specific programs (some security-classified projects may be restricted)</span>
+          </div>
+          <div class="step-item">
+            <span class="icon">📞</span>
+            <span>Inquire with your institution's Research Office or Industry-Academia Cooperation Foundation</span>
+          </div>
+          <h5 style="margin-top:16px">⚠️ Important Notes</h5>
+          <div class="step-item">
+            <span class="icon">⚠️</span>
+            <span>Projects related to national security may restrict participation of foreign researchers</span>
+          </div>
+        </div>
+        <div class="step-docs">
+          <h5>Related Guides &amp; Documents</h5>
+          <div class="doc-link" onclick="alert('PDF Download: Eligibility Guide for Foreign Researchers in Korean R&D')">
+            <span class="doc-icon">📄</span>
+            <div class="doc-text">
+              <div class="doc-name">Eligibility Guide for Foreign R&amp;D Researchers</div>
+              <div class="doc-type">PDF · Produced by KIRD · Latest 2025 Edition</div>
+            </div>
+            <span class="doc-action">⬇ PDF</span>
+          </div>
+          <div class="doc-link" onclick="alert('External Link: Visa &amp; Residency Status Guide (Ministry of Justice Hi-Korea)')">
+            <span class="doc-icon">🔗</span>
+            <div class="doc-text">
+              <div class="doc-name">Visa &amp; Residency Status Guide (Hi-Korea)</div>
+              <div class="doc-type">External link · Opens in new tab</div>
+            </div>
+            <span class="doc-action">Visit ↗</span>
+          </div>
+          <div class="doc-link" onclick="alert('External Link: National R&D Innovation Act Overview')">
+            <span class="doc-icon">🔗</span>
+            <div class="doc-text">
+              <div class="doc-name">National R&amp;D Innovation Act Overview</div>
+              <div class="doc-type">External link · NTIS</div>
+            </div>
+            <span class="doc-action">Visit ↗</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ▌External Agency Links -->
+<section class="link-section">
+  <div class="link-section-inner">
+    <div class="section-header" style="margin-bottom:24px">
+      <div class="section-title">🔗 External Agencies for National R&amp;D Funding<span>Click to visit official funding announcement pages</span></div>
+    </div>
+    <div class="link-grid">
+      <div class="ext-link-card" onclick="alert('⚠ Redirecting to external site: NTIS (National Science &amp; Technology Information Service)')">
+        <div class="logo">🏛️</div>
+        <h5>NTIS</h5>
+        <p>National Science &amp; Technology Information Service<br>Integrated R&amp;D project search</p>
+        <span class="ext-btn">View Announcements ↗</span>
+      </div>
+      <div class="ext-link-card" onclick="alert('⚠ Redirecting to external site: ZEUS (Integrated Research Support System)')">
+        <div class="logo">⚡</div>
+        <h5>ZEUS</h5>
+        <p>Integrated Cross-Ministry Research Support System<br>Project application &amp; management</p>
+        <span class="ext-btn">View Announcements ↗</span>
+      </div>
+      <div class="ext-link-card" onclick="alert('⚠ Redirecting to external site: NRF Korea')">
+        <div class="logo">🔬</div>
+        <h5>NRF Korea</h5>
+        <p>National Research Foundation of Korea<br>Basic research programs &amp; Postdoc support</p>
+        <span class="ext-btn">View Announcements ↗</span>
+      </div>
+      <div class="ext-link-card" onclick="alert('⚠ Redirecting to external site: KEIT')">
+        <div class="logo">🏭</div>
+        <h5>KEIT</h5>
+        <p>Korea Evaluation Institute of Industrial Technology<br>Industrial R&amp;D program announcements</p>
+        <span class="ext-btn">View Announcements ↗</span>
+      </div>
+    </div>
+    <div style="background:#FEF3C7;border:1px solid #FDE68A;border-radius:var(--radius-sm);padding:12px 16px;margin-top:16px;display:flex;align-items:center;gap:10px">
+      <span>⚠️</span>
+      <span style="font-size:13px;color:#92400E">Clicking the above links will redirect you to external websites. Always verify the original announcement details on the respective agency's official site.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ▌Latest R&D Announcements -->
+<div class="announce-section">
+  <div class="section-header" style="margin-bottom:20px">
+    <div class="section-title">📋 Latest National R&amp;D Announcements<span>Direct links to original agency announcements</span></div>
+    <div class="lang-switch" style="border-color:var(--border)">
+      <span class="on">Latest</span><span>Deadline Soon</span>
+    </div>
+  </div>
+  <div class="announce-grid">
+    <div class="announce-card">
+      <div class="announce-card-top">
+        <div class="announce-agency">🔬</div>
+        <div class="announce-info">
+          <div class="announce-title">2026 Basic Research Program (Individual Research) — New Project Applications</div>
+          <div class="announce-org">NRF Korea (National Research Foundation)</div>
+        </div>
+      </div>
+      <div class="announce-meta">
+        <span class="badge badge-blue">Basic Research</span>
+        <span class="badge badge-orange">Foreign Researchers Eligible</span>
+        <span>Submission: Nov 15 – Dec 15, 2025</span>
+        <span class="warn-txt">⚠ External site</span>
+      </div>
+    </div>
+    <div class="announce-card">
+      <div class="announce-card-top">
+        <div class="announce-agency">⚡</div>
+        <div class="announce-info">
+          <div class="announce-title">Advanced Materials &amp; Components Technology Development — New Projects</div>
+          <div class="announce-org">KEIT (Korea Evaluation Institute of Industrial Technology)</div>
+        </div>
+      </div>
+      <div class="announce-meta">
+        <span class="badge badge-blue">Industrial R&amp;D</span>
+        <span>Submission: Nov 20 – Dec 10, 2025</span>
+        <span class="warn-txt">⚠ External site</span>
+      </div>
+    </div>
+    <div class="announce-card">
+      <div class="announce-card-top">
+        <div class="announce-agency">🏛️</div>
+        <div class="announce-info">
+          <div class="announce-title">Global R&amp;D Collaboration Research Support Program</div>
+          <div class="announce-org">NTIS</div>
+        </div>
+      </div>
+      <div class="announce-meta">
+        <span class="badge badge-green">Global Collaboration</span>
+        <span class="badge badge-orange">Foreign PI Eligible</span>
+        <span>Submission: Dec 1 – Dec 31, 2025</span>
+        <span class="warn-txt">⚠ External site</span>
+      </div>
+    </div>
+    <div class="announce-card">
+      <div class="announce-card-top">
+        <div class="announce-agency">💡</div>
+        <div class="announce-info">
+          <div class="announce-title">Post-Doctoral Basic Research — Early-Career Researcher Support Program</div>
+          <div class="announce-org">NRF Korea (National Research Foundation)</div>
+        </div>
+      </div>
+      <div class="announce-meta">
+        <span class="badge badge-blue">Postdoctoral</span>
+        <span class="badge badge-orange">Foreign Researchers Eligible</span>
+        <span>Submission: Nov 10 – Dec 5, 2025</span>
+        <span class="warn-txt">⚠ External site</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ▌Step Popup -->
+<div class="step-popup" id="stepPopup">
+  <div class="step-popup-box">
+    <div class="step-popup-header" id="popupHeader" style="background:linear-gradient(135deg,#1A4FA0,#2D6ED4)">
+      <div>
+        <div style="font-size:13px;opacity:0.8;margin-bottom:4px" id="popupStep">Step 1</div>
+        <div style="font-size:19px;font-weight:800" id="popupTitle">Eligibility Check</div>
+      </div>
+      <span style="font-size:20px;cursor:pointer" onclick="closePopup()">✕</span>
+    </div>
+    <div class="step-popup-body">
+      <h5>Key Checklist</h5>
+      <ul id="popupList">
+        <li>Confirm visa status (E-3, F-2, F-5, etc.)</li>
+        <li>Verify institution's R&amp;D eligibility</li>
+        <li>Check foreign researcher restrictions per program</li>
+        <li>Consult your institution's Research Office</li>
+      </ul>
+      <h5 style="margin-top:16px">Related Guide</h5>
+      <div class="doc-link" style="margin-top:0">
+        <span class="doc-icon">📄</span>
+        <div class="doc-text">
+          <div class="doc-name">Eligibility Guide for Foreign R&amp;D Researchers (PDF)</div>
+          <div class="doc-type">KIRD Official · 2025 Latest Edition</div>
+        </div>
+        <span class="doc-action">⬇ PDF</span>
+      </div>
+    </div>
+    <div class="step-popup-footer">
+      <button class="btn btn-primary btn-sm">⬇ Download Related Guide</button>
+      <button class="btn btn-ghost btn-sm" onclick="closePopup()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ▌Footer -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">🔬 Support Platform for Foreign Research Talent</div>
+        <div>Operated by KIRD (Korea Institute of Research and Development Human Resources)</div>
+      </div>
+      <div class="footer-links">
+        <a href="#">Terms of Use</a><a href="#">Privacy Policy</a><a href="#">Contact Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">Copyright © 2026 KIRD. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+const stepData = {
+  s1: {
+    title: 'Eligibility Check',
+    gradient: 'linear-gradient(135deg,#1A4FA0,#2D6ED4)',
+    icon: '🔎',
+    items: ['Confirm visa status (E-3, F-2, F-5, etc.)', 'Verify institution\'s R&D eligibility', 'Check foreign researcher restrictions per program', 'Consult your institution\'s Research Office']
+  },
+  s2: {
+    title: 'Find Opportunities',
+    gradient: 'linear-gradient(135deg,#0D7A55,#00A878)',
+    icon: '📋',
+    items: ['Browse funding platforms: NTIS, ZEUS, etc.', 'Review program scope, scale, and duration', 'Confirm foreign researcher eligibility', 'Contact program coordinators for inquiries']
+  },
+  s3: {
+    title: 'Application Preparation',
+    gradient: 'linear-gradient(135deg,#7C3AED,#A78BFA)',
+    icon: '📝',
+    items: ['Download and complete the research proposal template', 'Review pre-screening procedures', 'Register collaborative project with your institution', 'Prepare signatures and official documents']
+  },
+  s4: {
+    title: 'Project Execution',
+    gradient: 'linear-gradient(135deg,#D97706,#F59E0B)',
+    icon: '🚀',
+    items: ['Submit project commencement report', 'Submit interim results and progress reports', 'Manage and settle research budget', 'Apply for contract amendments when needed']
+  },
+  s5: {
+    title: 'Completion & Follow-up',
+    gradient: 'linear-gradient(135deg,#DC2626,#F87171)',
+    icon: '✅',
+    items: ['Submit final report', 'Register research outcomes (papers, patents, tech transfer)', 'Complete budget settlement', 'Manage and track post-project outcomes']
+  }
+};
+
+function selectStep(el, key) {
+  document.querySelectorAll('.step-block').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+function openPopup(key) {
+  const d = stepData[key] || stepData.s1;
+  document.getElementById('popupTitle').textContent = d.icon + ' ' + d.title;
+  document.getElementById('popupHeader').style.background = d.gradient;
+  const list = document.getElementById('popupList');
+  list.innerHTML = d.items.map(i => `<li>${i}</li>`).join('');
+  document.getElementById('stepPopup').classList.add('open');
+}
+function closePopup() { document.getElementById('stepPopup').classList.remove('open'); }
+document.getElementById('stepPopup').addEventListener('click', function(e){
+  if(e.target===this) closePopup();
+});
+document.querySelectorAll('.step-block').forEach(b => {
+  b.addEventListener('click', function(){
+    const key = Array.from(this.classList).find(c => /^s\d$/.test(c));
+    if(key) openPopup(key);
+  });
+});
+</script>
+</body>
+</html>
